@@ -30,31 +30,23 @@ function Intro:update(dt)
 	self.timeCounter = self.timeCounter + dt
 	if game.state == gameConstants.GAME_INTRO then
 		if love.mouse.isDown("l") then
-			local introImages = self.introImages
-			local playImage = game.images.play
-			local xPlay = introConstants.INTRO_PLAY_BUTTON_COORD.x
-			local yPlay = introConstants.INTRO_PLAY_BUTTON_COORD.y
-			local x,y = love.mouse.getPosition()
-			if x >= xPlay and x <= xPlay + playImage:getWidth()
-				and y >= yPlay and y <= yPlay + playImage:getHeight() then
-				game.state = gameConstants.GAME_PLAY_KEYBOARD
-			end
+			self:checkForClickOnPlayButton()
 		end
 	end
 end
 
-function Intro:loadImages()
+function Intro:checkForClickOnPlayButton()
 
-	local introImages = {
-		["title"] = {img={}, x=0, y=0,},
-		["play"] = {img={}, x=0, y=0,},
-		["mouse"] = {img={}, x=0, y=0,},
-		}
+			local playImage = game.images.play
+			local xPlay = introConstants.INTRO_PLAY_BUTTON_COORD.x
+			local yPlay = introConstants.INTRO_PLAY_BUTTON_COORD.y
+			local x,y = love.mouse.getPosition()
+			local w = playImage:getWidth()
+			local h = playImage:getHeight()
 
-	introImages.play.img = game.images.play
-	introImages.play.x = introConstants.INTRO_PLAY_BUTTON_COORD.x
-	introImages.play.y = introConstants.INTRO_PLAY_BUTTON_COORD.y
+			if x >= xPlay and x <= xPlay + w
+				and y >= yPlay and y <= yPlay + h then
+				game.state = gameConstants.GAME_PLAY_KEYBOARD
+			end
 
-	return introImages
 end
-
