@@ -185,10 +185,14 @@ function Game:loadImages()
 	images["miniCannon"] = self:loadMiniCannonImage()
 	images["title"] = self:loadTitleImage()
 	images["play"] = self:loadPlayImage()
-	--images["unitAPts"] = self:loadUnitAPtsImage()
-	--images["unitBPts"] = self:loadUnitBPtsImage()
-	--images["unitCPts"] = self:loadUnitCPtsImage()
-	--images["spaceshipPts"] = self:loadSpaceShipPtsImage()
+	images["unitA"] = self:loadUnitAImage()
+	images["unitB"] = self:loadUnitBImage()
+	images["unitC"] = self:loadUnitCImage()
+	images["spaceship"] = self:loadSpaceshipImage()
+	images["unitAPts"] = self:loadUnitAPtsImage()
+	images["unitBPts"] = self:loadUnitBPtsImage()
+	images["unitCPts"] = self:loadUnitCPtsImage()
+	images["spaceshipPts"] = self:loadSpaceshipPtsImage()
 
 	self.images = images
 
@@ -211,18 +215,47 @@ function Game:loadPlayImage()
 end
 
 
+function Game:loadUnitAImage()
+
+	return self:loadImage(waveConstants.WAVE_UNIT_A_COORD)
+end
+
+function Game:loadUnitBImage()
+
+	return self:loadImage(waveConstants.WAVE_UNIT_B_COORD)
+end
+
+function Game:loadUnitCImage()
+
+	return self:loadImage(waveConstants.WAVE_UNIT_C_COORD)
+end
 
 
+function Game:loadSpaceshipImage()
+
+	return self:loadImage(waveConstants.WAVE_SPACESHIP_COORD)
+end
 
 
+function Game:loadUnitAPtsImage()
 
+	return self:loadImage(introConstants.INTRO_UNIT_A_PTS_COORD)
+end
 
+function Game:loadUnitBPtsImage()
 
+	return self:loadImage(introConstants.INTRO_UNIT_B_PTS_COORD)
+end
 
+function Game:loadUnitCPtsImage()
 
+	return self:loadImage(introConstants.INTRO_UNIT_C_PTS_COORD)
+end
 
+function Game:loadSpaceshipPtsImage()
 
-
+	return self:loadImage(introConstants.INTRO_SPACESHIP_PTS_COORD)
+end
 
 
 

@@ -50,22 +50,41 @@ function love.draw()
 
 
 	elseif game.state == gameConstants.GAME_INTRO then
-		--[[local introImages = intro.introImages
-		love.graphics.draw(introImages.title.img, introImages.title.x, introImages.title.y)
-		love.graphics.draw(introImages.keyboard.img, introImages.keyboard.x, introImages.keyboard.y)
-		love.graphics.draw(introImages.mouse.img, introImages.mouse.x, introImages.mouse.y)]]
 
 		xTitle = (game.wCanvas - introConstants.INTRO_TITLE_COORD.w) / 2
-
-
 		love.graphics.draw(game.images.title, xTitle, 32)
 
 		xPlay = (game.wCanvas - introConstants.INTRO_PLAY_COORD.w) / 2
-
-
 		love.graphics.draw(game.images.play, xTitle, game.hCanvas - 80)
 
+		local stepIntro = 0.61
+		local xUnits = xTitle + 100
+		local xPts = xUnits + 40
 
+		if (intro.timeCounter > (stepIntro)) then
+			love.graphics.draw(game.images.unitC, xUnits,  180)
+			if (intro.timeCounter > (stepIntro * 2)) then
+				love.graphics.draw(game.images.unitCPts, xPts,  180 + 9)
+				if (intro.timeCounter > (stepIntro * 3)) then
+					love.graphics.draw(game.images.unitB, xUnits,  230)
+					if (intro.timeCounter > (stepIntro * 4)) then
+						love.graphics.draw(game.images.unitBPts, xPts,  230 + 9)
+						if (intro.timeCounter > (stepIntro * 5)) then
+							love.graphics.draw(game.images.unitA, xUnits,  280)
+							if (intro.timeCounter > (stepIntro * 6)) then
+								love.graphics.draw(game.images.unitAPts, xPts,  280 + 9)
+								if (intro.timeCounter > (stepIntro * 7)) then
+									love.graphics.draw(game.images.spaceship, xUnits,  330)
+									if (intro.timeCounter > (stepIntro * 8)) then
+										love.graphics.draw(game.images.spaceshipPts, xPts,  330 + 5)
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
 
 	else
 
@@ -84,7 +103,7 @@ end
 function love.update(dt)
 
 	if game.state == gameConstants.GAME_INTRO then
-		intro:update()
+		intro:update(dt)
 
 	elseif  game.state == gameConstants.GAME_OVER then
 		over:update()
@@ -166,6 +185,14 @@ function love.keypressed(k)
 
 	if k == "escape" then
 		love.event.push("q")
+	end
+
+	if game.state == gameConstants.GAME_INTRO then
+		if k == " " or k == "return" then
+			game.state = gameConstants.GAME_PLAY_KEYBOARD
+		else
+			print (k)
+		end
 	end
 
 end

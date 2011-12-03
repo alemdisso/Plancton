@@ -4,7 +4,7 @@ introListRemove = {}
 
 Intro = {}
 
-IntroBuilder = createClass(Intro)
+IntroBuilder = createClass(Intro, Updatable, Drawable)
 
 
 function Intro:new()
@@ -12,6 +12,7 @@ function Intro:new()
 	introList[#introList+1] = self
 
 	self.introImages = self:loadImages()
+	self.timeCounter = -2
 
 	return self
 end
@@ -28,6 +29,7 @@ function Intro:draw()
 end
 
 function Intro:update(dt)
+	self.timeCounter = self.timeCounter + dt
 	if game.state == gameConstants.GAME_INTRO then
 		if love.mouse.isDown("l") then
 
@@ -39,10 +41,6 @@ function Intro:update(dt)
 
 				game.state = gameConstants.GAME_PLAY_KEYBOARD
 
-			elseif x >= introImages.mouse.x and x <= introImages.mouse.x + introImages.mouse.img:getWidth()
-				and y >= introImages.mouse.y and y <= introImages.mouse.y + introImages.mouse.img:getHeight() then
-
-				game.state = gameConstants.GAME_PLAY_MOUSE
 			end
 		end
 
@@ -60,6 +58,8 @@ function Intro:loadImages()
 	introImages.play.img = game.images.play
 	introImages.play.x = introConstants.INTRO_PLAY_BUTTON_COORD.x
 	introImages.play.y = introConstants.INTRO_PLAY_BUTTON_COORD.y
+
+
 	--local titleSprite = SpriteClass.new(introConstants.INTRO_TITLE_SPRITE)
 	--[[local titleSprite = game.spriteBatch
 	local titleImgSource = love.image.newImageData(introConstants.INTRO_TITLE_COORD.w, introConstants.INTRO_TITLE_COORD.h)
@@ -78,7 +78,7 @@ function Intro:loadImages()
 
 	--local mouseSprite = SpriteClass.new(introConstants.INTRO_MOUSE_SPRITE)
 	local mouseSprite = game.spriteBatch
-	local mouseImgSource = love.image.newImageData(introConstants.INTRO_MOUSE_COORD.w, introConstants.INTRO_MOUSE_COORD.h)
+	local mouseImgSource	 = love.image.newImageData(introConstants.INTRO_MOUSE_COORD.w, introConstants.INTRO_MOUSE_COORD.h)
 	mouseImgSource:paste(mouseSprite.userData, 0, 0, 0, 0)
 	introImages.mouse.img = love.graphics.newImage(mouseImgSource)
 	introImages.mouse.x = introConstants.INTRO_MOUSE_COORD.x
