@@ -4,6 +4,7 @@ limitar numero de naves por onda
 diferentes balas invasores
 variar velocidade das naves
 ranking
+diminuir escudos
 mudar fundo
 mudar escudos
 mudar canhão
