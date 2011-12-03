@@ -1,0 +1,35 @@
+ver pontos na intro
+tela de game over
+limitar numero de naves por onda
+diferentes balas invasores
+variar velocidade das naves
+ranking
+mudar fundo
+mudar escudos
+mudar canhão
+
+bonus por precisão
+bonus por velocidade
+reduzir velocidade dos invasores
+aumentar frequencia de disparo do canhão
+regenerar escudo
+
+só destruir invasores com tiros mais precisos
+diminuir velocidade quando chega no escudo
+mudar explosão
+
+
+
+complete:
+
+game over quando os invasores chegam ao canhão
+nave atravessando em cima
+- sorteia valor
+parar disparos durante a explosão
+pausa entre as ondas
+ajustar exibição de vidas
+
+
+
+
+
