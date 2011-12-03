@@ -17,15 +17,13 @@ function Game:new()
 	math.randomseed(os.time())
 
 	self:defineWindowConfiguration()
-
 	self:createLevels()
-
 	self.spriteBatch = SpriteClass.new(gameConstants.GAME_SPRITE)
-
 	self:loadImages()
 
 	--self.state = gameConstants.GAME_PLAY_KEYBOARD
 	self.state = gameConstants.GAME_INTRO
+
 	self.bg = love.graphics.newImage(gameConstants.GAME_BG)
 	self.font = love.graphics.newFont(gameConstants.GAME_FONT, gameConstants.GAME_FONTSIZE)
 
@@ -45,9 +43,6 @@ end
 
 function Game:draw(dt)
 
-	--love.graphics.draw(self.img, self.pos.x, self.pos.y)
-
-
 end
 
 function Game:update(dt)
@@ -66,12 +61,142 @@ function Game:defineWindowConfiguration()
 	self.wCanvas = wCanvas
 	self.hCanvas = hCanvas
 
+end
+
+
+function Game:createLevels()
+
+	local gameLevels =	{
+			{
+				speedX = 40,
+				speedY = 20,
+				delays = {5,15,7,30,17,40},
+		},
+			{
+				speedX = 42,
+				speedY = 21,
+				delays = {5,14,6,28,13,35},
+		},
+			{
+				speedX = 44,
+				speedY = 22,
+				delays = {4,13,6,26,11,32},
+		},
+			{
+				speedX = 47,
+				speedY = 25,
+				delays = {4,12,5,23,9,28},
+		},
+			{
+				speedX = 50,
+				speedY = 27,
+				delays = {3,11,5,20,7,25},
+		},
+			{
+				speedX = 55,
+				speedY = 30,
+				delays = {3,10,4,17,5,20},
+		},
+			{
+				speedX = 62,
+				speedY = 35,
+				delays = {2,9,4,15,4,18},
+		},
+			{
+				speedX = 70,
+				speedY = 40,
+				delays = {2,8,3,12,3,15},
+		},
+			{
+				speedX = 80,
+				speedY = 47,
+				delays = {1,7,2,10,2,12},
+		},
+			{
+				speedX = 90,
+				speedY = 52,
+				delays = {1,6,1,8,2,10},
+		},
+	}
+
+	self.gameLevels = gameLevels
 
 end
 
 
-function Game:placeShields()
 
+function Game:loadImages()
+
+	local images = {}
+
+	images["miniCannon"] = self:loadMiniCannonImage()
+	images["title"] = self:loadTitleImage()
+	images["play"] = self:loadPlayImage()
+	images["unitA"] = self:loadUnitAImage()
+	images["unitB"] = self:loadUnitBImage()
+	images["unitC"] = self:loadUnitCImage()
+	images["spaceship"] = self:loadSpaceshipImage()
+	images["unitAPts"] = self:loadUnitAPtsImage()
+	images["unitBPts"] = self:loadUnitBPtsImage()
+	images["unitCPts"] = self:loadUnitCPtsImage()
+	images["spaceshipPts"] = self:loadSpaceshipPtsImage()
+
+	self.images = images
+
+
+end
+
+function Game:loadImage(coordinates)
+	local imgSource = love.image.newImageData(coordinates.w, coordinates.h)
+	imgSource:paste(self.spriteBatch.userData, 0, 0, coordinates.spriteX, coordinates.spriteY)
+	return love.graphics.newImage(imgSource)
+end
+
+function Game:loadMiniCannonImage()
+	return self:loadImage(gameConstants.GAME_MINICANNON_COORD)
+end
+
+function Game:loadTitleImage()
+	return self:loadImage(introConstants.INTRO_TITLE_COORD)
+end
+
+function Game:loadPlayImage()
+	return self:loadImage(introConstants.INTRO_PLAY_COORD)
+end
+
+function Game:loadUnitAImage()
+	return self:loadImage(waveConstants.WAVE_UNIT_A_COORD)
+end
+
+function Game:loadUnitBImage()
+	return self:loadImage(waveConstants.WAVE_UNIT_B_COORD)
+end
+
+function Game:loadUnitCImage()
+	return self:loadImage(waveConstants.WAVE_UNIT_C_COORD)
+end
+
+function Game:loadSpaceshipImage()
+	return self:loadImage(waveConstants.WAVE_SPACESHIP_COORD)
+end
+
+function Game:loadUnitAPtsImage()
+	return self:loadImage(introConstants.INTRO_UNIT_A_PTS_COORD)
+end
+
+function Game:loadUnitBPtsImage()
+	return self:loadImage(introConstants.INTRO_UNIT_B_PTS_COORD)
+end
+
+function Game:loadUnitCPtsImage()
+	return self:loadImage(introConstants.INTRO_UNIT_C_PTS_COORD)
+end
+
+function Game:loadSpaceshipPtsImage()
+	return self:loadImage(introConstants.INTRO_SPACESHIP_PTS_COORD)
+end
+
+function Game:placeShields()
 
 	local leftMargin, rightMargin = shieldConstants.SHIELD_LATERAL_MARGINS, shieldConstants.SHIELD_LATERAL_MARGINS
 	local numShields = shieldConstants.SHIELD_NUM_SHIELDS
@@ -173,157 +298,6 @@ function Game:showLives()
 	end
 
 
-
-end
-
-
-
-function Game:loadImages()
-
-	local images = {}
-
-	images["miniCannon"] = self:loadMiniCannonImage()
-	images["title"] = self:loadTitleImage()
-	images["play"] = self:loadPlayImage()
-	images["unitA"] = self:loadUnitAImage()
-	images["unitB"] = self:loadUnitBImage()
-	images["unitC"] = self:loadUnitCImage()
-	images["spaceship"] = self:loadSpaceshipImage()
-	images["unitAPts"] = self:loadUnitAPtsImage()
-	images["unitBPts"] = self:loadUnitBPtsImage()
-	images["unitCPts"] = self:loadUnitCPtsImage()
-	images["spaceshipPts"] = self:loadSpaceshipPtsImage()
-
-	self.images = images
-
-
-end
-
-
-function Game:loadMiniCannonImage()
-
-	return self:loadImage(gameConstants.GAME_MINICANNON_COORD)
-
-end
-
-function Game:loadTitleImage()
-	return self:loadImage(introConstants.INTRO_TITLE_COORD)
-end
-
-function Game:loadPlayImage()
-	return self:loadImage(introConstants.INTRO_PLAY_COORD)
-end
-
-
-function Game:loadUnitAImage()
-
-	return self:loadImage(waveConstants.WAVE_UNIT_A_COORD)
-end
-
-function Game:loadUnitBImage()
-
-	return self:loadImage(waveConstants.WAVE_UNIT_B_COORD)
-end
-
-function Game:loadUnitCImage()
-
-	return self:loadImage(waveConstants.WAVE_UNIT_C_COORD)
-end
-
-
-function Game:loadSpaceshipImage()
-
-	return self:loadImage(waveConstants.WAVE_SPACESHIP_COORD)
-end
-
-
-function Game:loadUnitAPtsImage()
-
-	return self:loadImage(introConstants.INTRO_UNIT_A_PTS_COORD)
-end
-
-function Game:loadUnitBPtsImage()
-
-	return self:loadImage(introConstants.INTRO_UNIT_B_PTS_COORD)
-end
-
-function Game:loadUnitCPtsImage()
-
-	return self:loadImage(introConstants.INTRO_UNIT_C_PTS_COORD)
-end
-
-function Game:loadSpaceshipPtsImage()
-
-	return self:loadImage(introConstants.INTRO_SPACESHIP_PTS_COORD)
-end
-
-
-
-function Game:loadImage(coordinates)
-	local imgSource = love.image.newImageData(coordinates.w, coordinates.h)
-	imgSource:paste(self.spriteBatch.userData, 0, 0, coordinates.spriteX, coordinates.spriteY)
-	return love.graphics.newImage(imgSource)
-end
-
-
-
-
-function Game:createLevels()
-
-	local gameLevels =	{
-			{
-				speedX = 40,
-				speedY = 20,
-				delays = {5,15,7,30,17,40},
-		},
-			{
-				speedX = 42,
-				speedY = 21,
-				delays = {5,14,6,28,13,35},
-		},
-			{
-				speedX = 44,
-				speedY = 22,
-				delays = {4,13,6,26,11,32},
-		},
-			{
-				speedX = 47,
-				speedY = 25,
-				delays = {4,12,5,23,9,28},
-		},
-			{
-				speedX = 50,
-				speedY = 27,
-				delays = {3,11,5,20,7,25},
-		},
-			{
-				speedX = 55,
-				speedY = 30,
-				delays = {3,10,4,17,5,20},
-		},
-			{
-				speedX = 62,
-				speedY = 35,
-				delays = {2,9,4,15,4,18},
-		},
-			{
-				speedX = 70,
-				speedY = 40,
-				delays = {2,8,3,12,3,15},
-		},
-			{
-				speedX = 80,
-				speedY = 47,
-				delays = {1,7,2,10,2,12},
-		},
-			{
-				speedX = 90,
-				speedY = 52,
-				delays = {1,6,1,8,2,10},
-		},
-	}
-
-	self.gameLevels = gameLevels
 
 end
 

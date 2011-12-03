@@ -44,9 +44,7 @@ introConstants =
   INTRO_SPACESHIP_PTS_COORD = {spriteX=108, spriteY=125, w=122, h=15},
   INTRO_PLAY_COORD = {spriteX=0, spriteY=86, w=340, h=18},
   INTRO_PLAY_BUTTON_COORD = {x=150, y=400, w=340, h=18},
-
-
-
+  INTRO_DELAY_TO_SHOW_1ST_UNIT = -2,
   INTRO_MOUSE_COORD = {x=143, y=300, w=474, h=35},
   INTRO_KEYBOARD_COORD = {x=0, y=86, w=216, h=12},
 
