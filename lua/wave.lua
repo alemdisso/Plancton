@@ -78,6 +78,7 @@ end
 
 function Wave:loadInvadersImages()
 
+	--[[
 	local spriteBatch = spriteBatch
 
 	self.invaderRegions = {}
@@ -96,10 +97,13 @@ function Wave:loadInvadersImages()
 	invaderImgSource = self:loadUnitsImagesFromSprite()
 	self.invaderImgSource = invaderImgSource
 
+	]]
+
+	self.invaderImages = game.images.invaderUnits
+
 	self:findWiderUnit()
 
-	return invaderImgSource
-
+	--return invaderImgSource
 end
 
 
@@ -381,9 +385,10 @@ function Wave:placeInvader(column, line)
 
 	local firstBlock = math.ceil((self.numLines * 0.2))
 	local secondBlock = math.ceil((self.numLines * 0.6))
-	local unitImgSource = {}
+	local unitImgArray = {}
 	local unitType = nil
-	local invaderImgSource = self.invaderImgSource
+	--local invaderImgSource = self.invaderImgSource
+	local invaderImages = self.invaderImages
 
 	local faster = nil
 	local level = nil
@@ -403,30 +408,40 @@ function Wave:placeInvader(column, line)
 	end
 
 
-	--print (firstBlock, secondBlock)
+	print (#invaderImages)
 	if line <= firstBlock then
+	print ("1st block")
 		unitType = waveConstants.WAVE_INVADER_A
 		unitType.minDelay = level.delays[1]
 		unitType.maxDelay = level.delays[2]
-		unitImgSource[1] = invaderImgSource[1]
-		unitImgSource[2] = invaderImgSource[2]
+		unitImgArray[1] = invaderImages[1]
+		unitImgArray[2] = invaderImages[2]
+		--unitImgSource[1] = invaderImgSource[1]
+		--unitImgSource[2] = invaderImgSource[2]
 	elseif line <= secondBlock then
+	print ("2nd block")
 		unitType = waveConstants.WAVE_INVADER_B
 		unitType.minDelay = level.delays[3]
 		unitType.maxDelay = level.delays[4]
-		unitImgSource[1] = invaderImgSource[3]
-		unitImgSource[2] = invaderImgSource[4]
+		unitImgArray[1] = invaderImages[3]
+		unitImgArray[2] = invaderImages[4]
+		--unitImgSource[1] = invaderImgSource[3]
+		--unitImgSource[2] = invaderImgSource[4]
 	else
+	print ("3rd block")
 		unitType = waveConstants.WAVE_INVADER_C
 		unitType.minDelay = level.delays[5]
 		unitType.maxDelay = level.delays[6]
-		unitImgSource[1] = invaderImgSource[5]
-		unitImgSource[2] = invaderImgSource[6]
+		unitImgArray[1] = invaderImages[5]
+		unitImgArray[2] = invaderImages[6]
+		--unitImgSource[1] = invaderImgSource[5]
+		--unitImgSource[2] = invaderImgSource[6]
 	end
 
 	local newInvader = InvaderBuilder:new(
 					{
-						imgSourceArray = unitImgSource,
+						--imgSourceArray = unitImgSource,
+						imgArray = unitImgArray,
 						invaderBatch = game.spriteBatch,
 						wave = self,
 						line = line,
@@ -448,13 +463,25 @@ end
 
 function Wave:findWiderUnit()
 
-	local imgInvader
-	local invaderImgSource = self.invaderImgSource
+--[[	local invaderImgSource = self.invaderImgSource
 
 	imgInvader = love.graphics.newImage(invaderImgSource[1])
+	]]
+
+	local invaderImages = self.invaderImages
 
 	local widerUnitWidth = 0
 
+	for i,v in ipairs(invaderImages) do
+		local imgInvader = v
+		local thisWidth = 	imgInvader:getWidth()
+		if thisWidth > widerUnitWidth then
+			widerUnitWidth = thisWidth
+			widerUnitHeight = imgInvader:getHeight()
+			self.img = imgInvader
+		end
+	end
+--[[
 	for i,v in ipairs(invaderImgSource) do
 		local imgInvader = love.graphics.newImage(v)
 		local thisWidth = 	imgInvader:getWidth()
@@ -464,7 +491,7 @@ function Wave:findWiderUnit()
 			self.img = imgInvader
 		end
 	end
-
+]]
 	self.width = widerUnitWidth
 	self.height = widerUnitHeight
 
@@ -526,9 +553,6 @@ function Wave:launchSpaceship()
 						imgSourceArray = self.spaceshipImgSource,
 					}
 				)
-
-
-
 
 end
 

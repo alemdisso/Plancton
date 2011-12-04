@@ -10,6 +10,8 @@ function Invader:new()
 
 	invaderList[#invaderList+1] = self
 
+	print ("invader " .. #self.imgArray)
+
 	self.signature="invader"
 	self:loadImages()
 	self:loadSounds()
@@ -107,6 +109,7 @@ end
 
 function Invader:loadImages()
 
+--[[
 	local imgArray = {}
 	local imgSourceArray = self.imgSourceArray
 	local indexImgArray = 1
@@ -114,8 +117,11 @@ function Invader:loadImages()
 	for i = 1, #imgSourceArray do
 		imgArray[i] = love.graphics.newImage(imgSourceArray[i])
 	end
+	]]
 
-	self.imgArray = imgArray
+
+	--self.imgArray = imgArray
+	local indexImgArray = 1
 	self.img = self.imgArray[indexImgArray]
 	self.indexImgArray = indexImgArray
 

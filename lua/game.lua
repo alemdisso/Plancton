@@ -142,6 +142,7 @@ function Game:loadImages()
 	images["unitCPts"] = self:loadUnitCPtsImage()
 	images["spaceshipPts"] = self:loadSpaceshipPtsImage()
 	images["cannon"] = self:loadCannonImages()
+	images["invaderUnits"] = self:loadInvaderUnitImages()
 
 	self.images = images
 
@@ -347,7 +348,6 @@ end
 
 function Game:loadCannonImages()
 
-	local cannonRegions = {}
 	local baseCoordinates = cannonConstants.CANNON_IMAGE_COORD
 	local spriteX = baseCoordinates.spriteX
 	local spriteY = baseCoordinates.spriteY
@@ -371,13 +371,75 @@ function Game:loadCannonImages()
 
 
 	return imgArray
-
-
-
-
-	--return self:loadImage(waveConstants.WAVE_UNIT_A_COORD)
 end
 
+
+function Game:loadInvaderUnitImages()
+
+	local units = {waveConstants.WAVE_UNIT_A_COORD, waveConstants.WAVE_UNIT_B_COORD, waveConstants.WAVE_UNIT_C_COORD}
+	local imgArray = {}
+	local index = 0
+
+
+	for i,v in ipairs(units) do
+
+		local unitCoordinates = v
+
+
+		local spriteX = unitCoordinates.spriteX
+		local spriteY = unitCoordinates.spriteY
+		local regionWidth = unitCoordinates.w
+		local regionHeight = unitCoordinates.h
+
+		local imgSource = {}
+
+
+		for j = 1, waveConstants.WAVE_UNIT_MOTION_STEPS do
+			index = index + 1
+			local coordinates = {spriteX=0, spriteY=0, w=0, h=0}
+			coordinates.spriteX = ((j-1) * unitCoordinates.w) + unitCoordinates.spriteX
+			coordinates.spriteY = unitCoordinates.spriteY
+			coordinates.w = unitCoordinates.w
+			coordinates.h = unitCoordinates.h
+
+			print (coordinates.spriteX, coordinates.spriteY, coordinates.w, coordinates.h)
+
+			imgArray[index] = self:loadImage(coordinates)
+
+		end
+
+
+	end
+
+	print ("# imgArray " .. #imgArray)
+	return imgArray
+
+
+	--[[
+
+	local baseCoordinates = cannonConstants.CANNON_IMAGE_COORD
+	local spriteX = baseCoordinates.spriteX
+	local spriteY = baseCoordinates.spriteY
+	local regionWidth = baseCoordinates.w
+	local regionHeight = baseCoordinates.h
+
+	local imgSource = {}
+	local imgArray = {}
+
+
+	for i = 1, cannonConstants.CANNON_MOTION_STEPS do
+		local coordinates = {spriteX=0, spriteY=0, w=0, h=0}
+		coordinates.spriteX = ((i-1) * baseCoordinates.w) + baseCoordinates.spriteX
+		coordinates.spriteY = baseCoordinates.spriteY
+		coordinates.w = baseCoordinates.w
+		coordinates.h = baseCoordinates.h
+
+		imgArray[i] = self:loadImage(coordinates)
+
+	end
+]]
+
+end
 
 
 
