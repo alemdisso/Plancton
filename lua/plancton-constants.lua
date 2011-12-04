@@ -26,7 +26,9 @@ gameConstants =
   GAME_MINICANNON_COORD = {spriteX=220, spriteY=27, w=25, h=23},
   GAME_WCANVAS = 640,
   GAME_HCANVAS = 480,
-  GAME_WINDOW_CAPTION = "Plancton Invaders 2011"
+  GAME_WINDOW_CAPTION = "Plancton Invaders 2011",
+  GAME_LEFT_MARGIN = 12,
+  GAME_RIGHT_MARGIN = 12,
   }
 
 gameConstants = protect_table (gameConstants)
@@ -101,6 +103,8 @@ cannonConstants =
 	CANNON_BULLET_HIT_IMPACT = 1,
 	--CANNON_INTERVAL_FIRE=0.2,
 	CANNON_INTERVAL_FIRE=0.5,
+	CANNON_IMAGE_COORD = {spriteX=0, spriteY=0, w=55, h=50},
+	CANNON_MOTION_STEPS=4,
 
   }
 

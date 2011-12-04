@@ -1,12 +1,12 @@
-ver pontos na intro
+delay entre canhões
 tela de game over
 limitar numero de naves por onda
 diferentes balas invasores
 variar velocidade das naves
 ranking
-diminuir escudos
-mudar fundo
 mudar escudos
+explosão morte invasor
+mudar fundo
 mudar canhão
 
 bonus por precisão
@@ -29,6 +29,7 @@ nave atravessando em cima
 parar disparos durante a explosão
 pausa entre as ondas
 ajustar exibição de vidas
+ver pontos na intro
 
 
 

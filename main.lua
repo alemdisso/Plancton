@@ -48,7 +48,6 @@ function love.draw()
 	if game.state == gameConstants.GAME_OVER then
 		over:showOptions()
 
-
 	elseif game.state == gameConstants.GAME_INTRO then
 
 		xTitle = (game.wCanvas - introConstants.INTRO_TITLE_COORD.w) / 2

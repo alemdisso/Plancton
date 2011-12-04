@@ -20,6 +20,7 @@ function Game:new()
 	self:createLevels()
 	self.spriteBatch = SpriteClass.new(gameConstants.GAME_SPRITE)
 	self:loadImages()
+	self:loadSounds()
 
 	--self.state = gameConstants.GAME_PLAY_KEYBOARD
 	self.state = gameConstants.GAME_INTRO
@@ -140,6 +141,7 @@ function Game:loadImages()
 	images["unitBPts"] = self:loadUnitBPtsImage()
 	images["unitCPts"] = self:loadUnitCPtsImage()
 	images["spaceshipPts"] = self:loadSpaceshipPtsImage()
+	images["cannon"] = self:loadCannonImages()
 
 	self.images = images
 
@@ -195,6 +197,47 @@ end
 function Game:loadSpaceshipPtsImage()
 	return self:loadImage(introConstants.INTRO_SPACESHIP_PTS_COORD)
 end
+
+
+function Game:loadSounds()
+
+	local sounds = {}
+	sounds["cannonDeath"] = self:loadCannonDeathSound()
+	sounds["cannonShot"] = self:loadCannonShotSound()
+
+	self.sounds = sounds
+
+end
+
+function Game:loadSound(file, volume, pitch)
+
+	local volume = volume or 1
+	local pitch = pitch or 1
+
+	local sound = love.audio.newSource(file, static)
+	sound:setVolume(volume)
+	sound:setPitch(pitch)
+	return sound
+
+end
+
+
+function Game:loadCannonShotSound()
+
+	return self:loadSound("resources/audio/cannonshot.wav", 0.4, 1)
+
+end
+
+
+function Game:loadCannonDeathSound()
+
+	return self:loadSound("resources/audio/cannondeath.wav", 1, 1)
+
+
+
+
+end
+
 
 function Game:placeShields()
 
@@ -300,5 +343,42 @@ function Game:showLives()
 
 
 end
+
+
+function Game:loadCannonImages()
+
+	local cannonRegions = {}
+	local baseCoordinates = cannonConstants.CANNON_IMAGE_COORD
+	local spriteX = baseCoordinates.spriteX
+	local spriteY = baseCoordinates.spriteY
+	local regionWidth = baseCoordinates.w
+	local regionHeight = baseCoordinates.h
+
+	local imgSource = {}
+	local imgArray = {}
+
+
+	for i = 1, cannonConstants.CANNON_MOTION_STEPS do
+		local coordinates = {spriteX=0, spriteY=0, w=0, h=0}
+		coordinates.spriteX = ((i-1) * baseCoordinates.w) + baseCoordinates.spriteX
+		coordinates.spriteY = baseCoordinates.spriteY
+		coordinates.w = baseCoordinates.w
+		coordinates.h = baseCoordinates.h
+
+		imgArray[i] = self:loadImage(coordinates)
+
+	end
+
+
+	return imgArray
+
+
+
+
+	--return self:loadImage(waveConstants.WAVE_UNIT_A_COORD)
+end
+
+
+
 
 
