@@ -41,6 +41,8 @@ function Cannon:update(dt)
 		local new_x = self.pos.x
 		local new_y = self.pos.y
 
+--[[
+
 		if game.state == gameConstants.GAME_PLAY_KEYBOARD then
 			if love.keyboard.isDown(self.keys.right) then
 				new_x = self.pos.x + self.speed*dt
@@ -48,14 +50,14 @@ function Cannon:update(dt)
 				new_x = self.pos.x - self.speed*dt
 			end
 		end
-
+]]
 		if self.delayToShoot > 0 then
 			self.delayToShoot = self.delayToShoot - dt
 		else
 			self.readyToShoot = true
 		end
 
-		self:move(new_x, new_y)
+		self:move(dt)
 
 	else
 		self.part:setPosition(self.pos.x, self.pos.y)
@@ -150,13 +152,21 @@ function Cannon:manageParticles()
 end
 
 
-function Cannon:move(forX, forY)
+function Cannon:move(dt)
 
-	local forX = forX or self.pos.x
-	local forY = forY or self.pos.y
+	local forX = self.pos.x
+	local forY = self.pos.y
 
 	local leftLimit = self.leftLimit
 	local rightLimit = self.rightLimit
+
+	if game.state == gameConstants.GAME_PLAY_KEYBOARD then
+		if love.keyboard.isDown(self.keys.right) then
+			forX = self.pos.x + self.speed*dt
+		elseif love.keyboard.isDown(self.keys.left) then
+			forX = self.pos.x - self.speed*dt
+		end
+	end
 
 	if forX < leftLimit then
 		self.pos.x = leftLimit

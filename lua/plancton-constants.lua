@@ -163,6 +163,11 @@ spaceshipConstants =
 	SPACESHIP_DEATH_SOUND = "resources/audio/spaceshipdeath.wav",
 	SPACESHIP_DEATH_SOUND_VOLUME = 0.75,
 	SPACESHIP_DEATH_SOUND_PITCH = 0.75,
+	SPACESHIP_DELAY_TO_PLAY_SOUND = 2,
+	SPACESHIP_POINTS_ARRAY = {50, 100, 100, 150, 150, 200, 200, 300},
+	SPACESHIP_TIME_SHOWING_POINTS = 2,
+	SPACESHIP_TRAVEL_SPEED = 70,
+	SPACESHIP_Y_ORBIT = 45,
   }
 
 spaceshipConstants = protect_table (spaceshipConstants)
