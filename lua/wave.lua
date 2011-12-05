@@ -78,34 +78,10 @@ end
 
 function Wave:loadInvadersImages()
 
-	--[[
-	local spriteBatch = spriteBatch
-
-	self.invaderRegions = {}
-
-	local units = {waveConstants.WAVE_INVADER_A, waveConstants.WAVE_INVADER_B, waveConstants.WAVE_INVADER_C}
-
-	for i,v in ipairs(units) do
-		local unitCoordinates = v
-		self:createUnitMotionStepsRegions(unitCoordinates.x,
-									unitCoordinates.y,
-									unitCoordinates.w,
-									unitCoordinates.h
-									)
-	end
-
-	invaderImgSource = self:loadUnitsImagesFromSprite()
-	self.invaderImgSource = invaderImgSource
-
-	]]
-
 	self.invaderImages = game.images.invaderUnits
-
 	self:findWiderUnit()
 
-	--return invaderImgSource
 end
-
 
 function Wave:createUnitMotionStepsRegions(x, y, w, h)
 	for i = 1, waveConstants.WAVE_UNIT_MOTION_STEPS do
@@ -127,8 +103,6 @@ function Wave:loadUnitsImagesFromSprite()
 	return invaderImgSource
 
 end
-
-
 
 function Wave:initFormation()
 
@@ -189,16 +163,11 @@ function Wave:shotOnTarget()
 	local game = game
 	local shotOnTarget = false
 
-	--print (game.state)
-
-
 	if game.state == gameConstants.GAME_EXPLOSION_MODE then
 		shotOnTarget = true
 	end
 
 	return shotOnTarget
-
-
 end
 
 
@@ -268,10 +237,6 @@ function Wave:findLateralLimits()
 	if maxFound ~= self.maxX then self.maxX = maxFound end
 
 end
-
-
-
-
 
 function Wave:findSpearHeads()
 
@@ -349,7 +314,6 @@ end
 
 function Wave:moveUnits(shiftMovement, step)
 
-
 	for i, v in ipairs(self.invaders) do
 		local thisInvader = v
 
@@ -371,15 +335,7 @@ function Wave:moveUnits(shiftMovement, step)
 			end
 		end
 	end
-
-
-
-
 end
-
-
-
-
 
 function Wave:placeInvader(column, line)
 
@@ -387,7 +343,6 @@ function Wave:placeInvader(column, line)
 	local secondBlock = math.ceil((self.numLines * 0.6))
 	local unitImgArray = {}
 	local unitType = nil
-	--local invaderImgSource = self.invaderImgSource
 	local invaderImages = self.invaderImages
 
 	local faster = nil
@@ -403,44 +358,30 @@ function Wave:placeInvader(column, line)
 		level = game.gameLevels[waveCount]
 		self.speedX = level.speedX
 		self.speedY = level.speedY
-
-
 	end
 
-
-	print (#invaderImages)
 	if line <= firstBlock then
-	print ("1st block")
 		unitType = waveConstants.WAVE_INVADER_A
 		unitType.minDelay = level.delays[1]
 		unitType.maxDelay = level.delays[2]
 		unitImgArray[1] = invaderImages[1]
 		unitImgArray[2] = invaderImages[2]
-		--unitImgSource[1] = invaderImgSource[1]
-		--unitImgSource[2] = invaderImgSource[2]
 	elseif line <= secondBlock then
-	print ("2nd block")
 		unitType = waveConstants.WAVE_INVADER_B
 		unitType.minDelay = level.delays[3]
 		unitType.maxDelay = level.delays[4]
 		unitImgArray[1] = invaderImages[3]
 		unitImgArray[2] = invaderImages[4]
-		--unitImgSource[1] = invaderImgSource[3]
-		--unitImgSource[2] = invaderImgSource[4]
 	else
-	print ("3rd block")
 		unitType = waveConstants.WAVE_INVADER_C
 		unitType.minDelay = level.delays[5]
 		unitType.maxDelay = level.delays[6]
 		unitImgArray[1] = invaderImages[5]
 		unitImgArray[2] = invaderImages[6]
-		--unitImgSource[1] = invaderImgSource[5]
-		--unitImgSource[2] = invaderImgSource[6]
 	end
 
 	local newInvader = InvaderBuilder:new(
 					{
-						--imgSourceArray = unitImgSource,
 						imgArray = unitImgArray,
 						invaderBatch = game.spriteBatch,
 						wave = self,
@@ -463,10 +404,6 @@ end
 
 function Wave:findWiderUnit()
 
---[[	local invaderImgSource = self.invaderImgSource
-
-	imgInvader = love.graphics.newImage(invaderImgSource[1])
-	]]
 
 	local invaderImages = self.invaderImages
 
@@ -481,17 +418,7 @@ function Wave:findWiderUnit()
 			self.img = imgInvader
 		end
 	end
---[[
-	for i,v in ipairs(invaderImgSource) do
-		local imgInvader = love.graphics.newImage(v)
-		local thisWidth = 	imgInvader:getWidth()
-		if thisWidth > widerUnitWidth then
-			widerUnitWidth = thisWidth
-			widerUnitHeight = imgInvader:getHeight()
-			self.img = imgInvader
-		end
-	end
-]]
+
 	self.width = widerUnitWidth
 	self.height = widerUnitHeight
 
@@ -525,7 +452,6 @@ end
 
 function Wave:createSpaceshipMotionStepsRegions(x, y, w, h)
 	for i = 1, waveConstants.WAVE_SPACESHIP_MOTION_STEPS do
-		--print (x, y, w, h)
 		local newRegion = RegionClass.new(((i-1) * w) + x, y, w, h)
 		table.insert(self.spaceshipRegions, newRegion)
 	end
@@ -556,7 +482,6 @@ function Wave:launchSpaceship()
 
 end
 
-
 function Wave:stillFighting()
 
 	local headCount = #self.invaders
@@ -566,12 +491,9 @@ function Wave:stillFighting()
 		return false
 	end
 
-
 end
 
-
 function Wave:stopFire(command)
-
 
 	if command == nil then
 		return self.stopFire
@@ -580,16 +502,9 @@ function Wave:stopFire(command)
 		return self.stopFire
 
 	end
-
-
-
 end
 
-
-
-
 function Wave:dumpFormationAndSpearHeads()
-
 
 	for i,v in ipairs(self.formation) do
 		local stringLine = ""
@@ -613,7 +528,4 @@ function Wave:dumpFormationAndSpearHeads()
 		end
 			print (stringLine)
 	end
-
 end
-
-

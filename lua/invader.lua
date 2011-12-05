@@ -5,33 +5,26 @@ Invader = {}
 
 InvaderBuilder = createClass(Invader, Updatable, Drawable)
 
-
 function Invader:new()
 
 	invaderList[#invaderList+1] = self
 
-	print ("invader " .. #self.imgArray)
-
 	self.signature="invader"
-	self:loadImages()
+	self:getImages()
 	self:loadSounds()
 	self:calculatePosition()
 	self:engageInFormation()
+
 	return self
 end
-
 
 function Invader:destroy()
 	self.active = false
 	invaderListRemove[#invaderListRemove+1] = self
 end
 
-
-
 function Invader:draw()
-
 	love.graphics.draw(self.img, self.pos.x, self.pos.y)
-
 end
 
 function Invader:update(dt)
@@ -39,32 +32,27 @@ function Invader:update(dt)
 	local delayToShoot = self.delayToShoot
 	local allowedToShoot = false
 
-	if self.delayToShoot <= 0  then
-
-		if self:allowedToShoot() then
-			self:shoot()
-		end
-
-		--print ("wave# " .. #waveList .. " min " .. self.unitType.minDelay .. " max " .. self.unitType.maxDelay .. " speed " .. self.wave.speedX)
-
-		self.delayToShoot = math.random(self.unitType.minDelay, self.unitType.maxDelay)
-
-	else
-
-		self.delayToShoot = self.delayToShoot - dt
-
+	if self:allowedToShoot(dt) then
+		self:shoot()
 	end
 
 end
 
-function Invader:allowedToShoot()
+function Invader:allowedToShoot(dt)
 
 	local haveFriendsAhead = self:haveFriendsAhead()
 	local haltShooting = self:haltShooting()
 	local allowedToShoot = false
+	local delayToShoot = self.delayToShoot
+	local allowedToShoot = false
 
-	if not haveFriendsAhead and not haltShooting then
-		allowedToShoot = true
+	if self.delayToShoot <= 0  then
+		if not haveFriendsAhead and not haltShooting then
+			allowedToShoot = true
+		end
+		self.delayToShoot = math.random(self.unitType.minDelay, self.unitType.maxDelay)
+	else
+		self.delayToShoot = self.delayToShoot - dt
 	end
 
 	return allowedToShoot
@@ -107,20 +95,8 @@ function Invader:shoot()
 			self.shotSound:play()
 end
 
-function Invader:loadImages()
+function Invader:getImages()
 
---[[
-	local imgArray = {}
-	local imgSourceArray = self.imgSourceArray
-	local indexImgArray = 1
-
-	for i = 1, #imgSourceArray do
-		imgArray[i] = love.graphics.newImage(imgSourceArray[i])
-	end
-	]]
-
-
-	--self.imgArray = imgArray
 	local indexImgArray = 1
 	self.img = self.imgArray[indexImgArray]
 	self.indexImgArray = indexImgArray
@@ -133,16 +109,20 @@ end
 
 function Invader:loadSounds()
 
-	self.shotSound = self:loadBulletSound()
-	self.deathSound = self:loadDeathSound()
+	--self.shotSound = self:loadBulletSound()
+	--self.deathSound = self:loadDeathSound()
+	--self.shotSound = game.sounds.invaderShot
+	--self.deathSound = game.sounds.invaderDeath
+	self.shotSound = game:loadInvaderShotSound()
+	self.deathSound = game:loadInvaderDeathSound()
 
 end
 
 function Invader:loadBulletSound()
 
-	local filePath = invaderConstants.INVADER_BULLET_SOUND
-	local volume = invaderConstants.INVADER_BULLET_SOUND_VOLUME
-	local pitch = invaderConstants.INVADER_BULLET_SOUND_PITCH
+	local filePath = invaderConstants.INVADER_SHOT_SOUND
+	local volume = invaderConstants.INVADER_SHOT_SOUND_VOLUME
+	local pitch = invaderConstants.INVADER_SHOT_SOUND_PITCH
 	local sound = self:loadSound(filePath, volume, pitch)
 
 	return sound

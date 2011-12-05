@@ -6,6 +6,8 @@ variar velocidade das naves
 ranking
 mudar escudos
 explosão morte invasor
+esperar nave passar para nova onda
+montar onda linha por linha e parar tiros
 mudar fundo
 mudar canhão
 

@@ -10,7 +10,6 @@ Game = {}
 
 GameBuilder = createClass(Game, Updatable, Drawable)
 
-
 function Game:new()
 	gameList[#gameList+1] = self
 
@@ -35,12 +34,10 @@ function Game:new()
 	return self
 end
 
-
 function Game:destroy()
 	self.active = false
 	gameListRemove[#gameListRemove+1] = self
 end
-
 
 function Game:draw(dt)
 
@@ -49,7 +46,6 @@ end
 function Game:update(dt)
 
 end
-
 
 function Game:defineWindowConfiguration()
 
@@ -63,7 +59,6 @@ function Game:defineWindowConfiguration()
 	self.hCanvas = hCanvas
 
 end
-
 
 function Game:createLevels()
 
@@ -206,6 +201,12 @@ function Game:loadSounds()
 	sounds["cannonDeath"] = self:loadCannonDeathSound()
 	sounds["cannonShot"] = self:loadCannonShotSound()
 
+	sounds["invaderDeath"] = self:loadInvaderDeathSound()
+	sounds["invaderShot"] = self:loadInvaderShotSound()
+
+	sounds["spaceshipDeath"] = self:loadSpaceshipDeathSound()
+	sounds["spaceshipTravel"] = self:loadSpaceshipTravelSound()
+
 	self.sounds = sounds
 
 end
@@ -214,7 +215,6 @@ function Game:loadSound(file, volume, pitch)
 
 	local volume = volume or 1
 	local pitch = pitch or 1
-
 	local sound = love.audio.newSource(file, static)
 	sound:setVolume(volume)
 	sound:setPitch(pitch)
@@ -224,21 +224,46 @@ end
 
 
 function Game:loadCannonShotSound()
-
-	return self:loadSound("resources/audio/cannonshot.wav", 0.4, 1)
-
+	local filePath = cannonConstants.CANNON_SHOT_SOUND
+	local volume = cannonConstants.CANNON_SHOT_SOUND_VOLUME
+	local pitch = cannonConstants.CANNON_SHOT_SOUND_PITCH
+	return self:loadSound(filePath, volume, pitch)
 end
-
 
 function Game:loadCannonDeathSound()
-
-	return self:loadSound("resources/audio/cannondeath.wav", 1, 1)
-
-
-
-
+	local filePath = cannonConstants.CANNON_DEATH_SOUND
+	local volume = cannonConstants.CANNON_DEATH_SOUND_VOLUME
+	local pitch = cannonConstants.CANNON_DEATH_SOUND_PITCH
+	return self:loadSound(filePath, volume, pitch)
 end
 
+function Game:loadInvaderShotSound()
+	local filePath = invaderConstants.INVADER_SHOT_SOUND
+	local volume = invaderConstants.INVADER_SHOT_SOUND_VOLUME
+	local pitch = invaderConstants.INVADER_SHOT_SOUND_PITCH
+	return self:loadSound(filePath, volume, pitch)
+end
+
+function Game:loadInvaderDeathSound()
+	local filePath = invaderConstants.INVADER_DEATH_SOUND
+	local volume = invaderConstants.INVADER_DEATH_SOUND_VOLUME
+	local pitch = invaderConstants.INVADER_DEATH_SOUND_PITCH
+	return self:loadSound(filePath, volume, pitch)
+end
+
+function Game:loadSpaceshipTravelSound()
+	local filePath = spaceshipConstants.SPACESHIP_TRAVEL_SOUND
+	local volume = spaceshipConstants.SPACESHIP_TRAVEL_SOUND_VOLUME
+	local pitch = spaceshipConstants.SPACESHIP_TRAVEL_SOUND_PITCH
+	return self:loadSound(filePath, volume, pitch)
+end
+
+function Game:loadSpaceshipDeathSound()
+	local filePath = spaceshipConstants.SPACESHIP_DEATH_SOUND
+	local volume = spaceshipConstants.SPACESHIP_DEATH_SOUND_VOLUME
+	local pitch = spaceshipConstants.SPACESHIP_DEATH_SOUND_PITCH
+	return self:loadSound(filePath, volume, pitch)
+end
 
 function Game:placeShields()
 
@@ -251,7 +276,6 @@ function Game:placeShields()
 	local shieldSector = wCanvas / numShields
 
 	-- posiciona os escudos
-
 	shields = {}
 	for i = 1, numShields do
 		thisShield = ShieldBuilder:new()
@@ -270,18 +294,13 @@ function Game:placeShields()
 		thisShield:placeBlocks()
 
 		shields[i] = thisShield
-
-
 	end
 
 	return shields
 
 end
 
-
 function Game:addPointsToScore(points)
-
-	--local points = points or 0
 
 	self.score = self.score + points
 
@@ -292,9 +311,7 @@ function Game:addPointsToScore(points)
 		self.lastExtraLife = math.floor(self.score - (self.score%1000))
 	end
 
-
 end
-
 
 function Game:printScore()
 
@@ -310,41 +327,25 @@ function Game:printScore()
 
 end
 
-
 function Game:showLives()
 
 	local lives = self.lives - 1
-
 	local x = 400
 
 	love.graphics.setColor(255, 255, 255, 255)
 	love.graphics.print("LIVES",320,16)
 
 	love.graphics.setColor(255, 255, 255, 255)
-
 	if lives <  6 then
-
 		for i=1, lives do
-
 			love.graphics.draw(self.images.miniCannon, x + (32 * i), 16, 0, 1, 1, 0, 0)
-
-
 		end
-
 	else
-
 		love.graphics.draw(self.images.miniCannon, x, 16, 0, 1, 1, 0, 0)
 		love.graphics.setColor(255, 255, 255, 255)
 		love.graphics.print("X " .. lives,x + 40 ,16)
-
-
-
 	end
-
-
-
 end
-
 
 function Game:loadCannonImages()
 
@@ -364,15 +365,11 @@ function Game:loadCannonImages()
 		coordinates.spriteY = baseCoordinates.spriteY
 		coordinates.w = baseCoordinates.w
 		coordinates.h = baseCoordinates.h
-
 		imgArray[i] = self:loadImage(coordinates)
-
 	end
-
 
 	return imgArray
 end
-
 
 function Game:loadInvaderUnitImages()
 
@@ -384,15 +381,11 @@ function Game:loadInvaderUnitImages()
 	for i,v in ipairs(units) do
 
 		local unitCoordinates = v
-
-
 		local spriteX = unitCoordinates.spriteX
 		local spriteY = unitCoordinates.spriteY
 		local regionWidth = unitCoordinates.w
 		local regionHeight = unitCoordinates.h
-
 		local imgSource = {}
-
 
 		for j = 1, waveConstants.WAVE_UNIT_MOTION_STEPS do
 			index = index + 1
@@ -401,46 +394,11 @@ function Game:loadInvaderUnitImages()
 			coordinates.spriteY = unitCoordinates.spriteY
 			coordinates.w = unitCoordinates.w
 			coordinates.h = unitCoordinates.h
-
-			print (coordinates.spriteX, coordinates.spriteY, coordinates.w, coordinates.h)
-
 			imgArray[index] = self:loadImage(coordinates)
-
 		end
 
-
 	end
 
-	print ("# imgArray " .. #imgArray)
 	return imgArray
 
-
-	--[[
-
-	local baseCoordinates = cannonConstants.CANNON_IMAGE_COORD
-	local spriteX = baseCoordinates.spriteX
-	local spriteY = baseCoordinates.spriteY
-	local regionWidth = baseCoordinates.w
-	local regionHeight = baseCoordinates.h
-
-	local imgSource = {}
-	local imgArray = {}
-
-
-	for i = 1, cannonConstants.CANNON_MOTION_STEPS do
-		local coordinates = {spriteX=0, spriteY=0, w=0, h=0}
-		coordinates.spriteX = ((i-1) * baseCoordinates.w) + baseCoordinates.spriteX
-		coordinates.spriteY = baseCoordinates.spriteY
-		coordinates.w = baseCoordinates.w
-		coordinates.h = baseCoordinates.h
-
-		imgArray[i] = self:loadImage(coordinates)
-
-	end
-]]
-
 end
-
-
-
-

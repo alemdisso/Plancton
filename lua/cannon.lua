@@ -9,8 +9,6 @@ Cannon = {}
 
 CannonBuilder = createClass(Cannon, Updatable, Drawable)
 
-
-
 function Cannon:new()
 
 	cannonList[#cannonList+1] = self
@@ -22,38 +20,9 @@ function Cannon:new()
 	local imgSourceArray = self:getImages()
 
 	self:setMovementParameters()
-
 	self:manageKeyboard()
-
 	self:manageWeaponry()
-
---[[
-	self.delayToShoot = 0
-	self.fireDelay = cannonConstants.CANNON_INTERVAL_FIRE
-	self.missileFired = nil
-	self.readyToShoot = true
-	self.exploding = false
-
-	self.bullets = {}
-	--self.bulletImgSource = self:loadBulletImage()
-
-	local shotSound = love.audio.newSource("resources/audio/cannonshot.wav", static)
-	shotSound:setVolume(0.4)
-	shotSound:setPitch(1)
-	self.shotSound = shotSound
-
-	local deathSound = love.audio.newSource("resources/audio/cannondeath.wav", static)
-	deathSound:setVolume(1)
-	deathSound:setPitch(1)
-
-
-	self.deathSound = deathSound
-]]
-
 	self:manageParticles()
-
-	--particles
-
 
 	return self
 end
@@ -63,13 +32,10 @@ end
 function Cannon:destroy()
 	self.active = false
 	cannonListRemove[#cannonListRemove+1] = self
-
-
 end
 
 
 function Cannon:update(dt)
-
 
 	if not self.exploding then
 		local new_x = self.pos.x
@@ -81,19 +47,10 @@ function Cannon:update(dt)
 			elseif love.keyboard.isDown(self.keys.left) then
 				new_x = self.pos.x - self.speed*dt
 			end
-		elseif game.state == gameConstants.GAME_PLAY_MOUSE then
-			local x,y = love.mouse.getPosition()
-
-			if x > (self.pos.x + self.width) then
-				new_x = self.pos.x + self.speed*dt
-			elseif x < self.pos.x then
-				new_x = self.pos.x - self.speed*dt
-			end
 		end
 
 		if self.delayToShoot > 0 then
 			self.delayToShoot = self.delayToShoot - dt
-			--print ("delay... " .. self.delayToShoot)
 		else
 			self.readyToShoot = true
 		end
@@ -104,14 +61,10 @@ function Cannon:update(dt)
 		self.part:setPosition(self.pos.x, self.pos.y)
 		self.part:update(dt)
 		if self.part:isEmpty() then
-			print ("end of explosion")
 			self.part:reset()
 			CannonBuilder:destroy(self)
 		end
 	end
-
-
-
 end
 
 
@@ -119,7 +72,6 @@ function Cannon:draw()
 
 	if not self.exploding then
 		love.graphics.draw(self.img, self.pos.x, self.pos.y, 0, 1, 1, 0, 0)
-
 	else
 		love.graphics.setColorMode("modulate")
 		love.graphics.setBlendMode("additive")
@@ -138,12 +90,13 @@ function Cannon:setMovementParameters()
 	local leftLimit = marginLeft
 	local rightLimit = (wCanvas - self.width - marginRight)
 
+	self.leftLimit = leftLimit
+	self.rightLimit = rightLimit
+
 	self.wCanvas = wCanvas
 	self.hCanvas = hCanvas
 
 	self.pos = {x=(wCanvas - self.width)/ 2, y=hCanvas-self.height-8, z=3}
-	self.leftLimit = leftLimit
-	self.rightLimit = rightLimit
 	self.speed = 250
 
 
@@ -171,7 +124,7 @@ function Cannon:manageWeaponry()
 
 	self.bullets = {}
 
-	self.shotSound = game.sounds.cannonShot
+	self.shotSound = game:loadCannonShotSound()
 	self.deathSound = game.sounds.cannonDeath
 
 end

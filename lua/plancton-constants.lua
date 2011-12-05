@@ -105,6 +105,12 @@ cannonConstants =
 	CANNON_INTERVAL_FIRE=0.5,
 	CANNON_IMAGE_COORD = {spriteX=0, spriteY=0, w=55, h=50},
 	CANNON_MOTION_STEPS=4,
+	CANNON_SHOT_SOUND = "resources/audio/cannonshot.wav",
+	CANNON_SHOT_SOUND_VOLUME = 0.4,
+	CANNON_SHOT_SOUND_PITCH = 1,
+	CANNON_DEATH_SOUND = "resources/audio/cannondeath.wav",
+	CANNON_DEATH_SOUND_VOLUME = 1,
+	CANNON_DEATH_SOUND_PITCH = 1,
 
   }
 
@@ -138,15 +144,28 @@ invaderConstants =
 	INVADER_SPRITE_X = 0,
 	INVADER_SPRITE_Y = 0,
 	INVADER_BULLET_HIT_IMPACT = 1,
-	INVADER_BULLET_SOUND = "resources/audio/invadershot.wav",
-	INVADER_BULLET_SOUND_VOLUME = 0.4,
-	INVADER_BULLET_SOUND_PITCH = 1,
+	INVADER_SHOT_SOUND = "resources/audio/invadershot.wav",
+	INVADER_SHOT_SOUND_VOLUME = 0.4,
+	INVADER_SHOT_SOUND_PITCH = 1,
 	INVADER_DEATH_SOUND = "resources/audio/aliendeath.wav",
 	INVADER_DEATH_SOUND_VOLUME = 1,
 	INVADER_DEATH_SOUND_PITCH = 1,
   }
 
-cannonConstants = protect_table (cannonConstants)
+invaderConstants = protect_table (invaderConstants)
+
+
+spaceshipConstants =
+  {
+	SPACESHIP_TRAVEL_SOUND = "resources/audio/spaceshiptravel.wav",
+	SPACESHIP_TRAVEL_SOUND_VOLUME = 1,
+	SPACESHIP_TRAVEL_SOUND_PITCH = 1,
+	SPACESHIP_DEATH_SOUND = "resources/audio/spaceshipdeath.wav",
+	SPACESHIP_DEATH_SOUND_VOLUME = 0.75,
+	SPACESHIP_DEATH_SOUND_PITCH = 0.75,
+  }
+
+spaceshipConstants = protect_table (spaceshipConstants)
 
 
 overConstants =
