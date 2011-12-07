@@ -29,6 +29,7 @@ gameConstants =
   GAME_WINDOW_CAPTION = "Plancton Invaders 2011",
   GAME_LEFT_MARGIN = 12,
   GAME_RIGHT_MARGIN = 12,
+  GAME_DELAY_TO_NEXT_CANNON = 2,
   }
 
 gameConstants = protect_table (gameConstants)

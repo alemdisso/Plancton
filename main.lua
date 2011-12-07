@@ -139,8 +139,12 @@ function love.update(dt)
 		end
 		if #cannonList == 0 then
 			if game.lives > 1 then
-				cannon = CannonBuilder:new()
-				game.lives = game.lives - 1
+				if game.delayToNextCannon < 0 then
+					cannon = CannonBuilder:new()
+					game.lives = game.lives - 1
+					game.delayToNextCannon = gameConstants.GAME_DELAY_TO_NEXT_CANNON
+				end
+				game.delayToNextCannon = game.delayToNextCannon - dt
 			else
 				for i,w in ipairs(waveList) do
 					for i,v in ipairs(w.invaders) do

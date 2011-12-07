@@ -28,6 +28,7 @@ function Game:new()
 	self.font = love.graphics.newFont(gameConstants.GAME_FONT, gameConstants.GAME_FONTSIZE)
 
 	self.lives = gameConstants.GAME_LIVES
+	self.delayToNextCannon = gameConstants.GAME_DELAY_TO_NEXT_CANNON
 	self.lastExtraLife = 0
 	self.score = 0
 
