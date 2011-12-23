@@ -49,45 +49,10 @@ function love.draw()
 		over:showOptions()
 
 	elseif game.state == gameConstants.GAME_INTRO then
-
-		xTitle = (game.wCanvas - introConstants.INTRO_TITLE_COORD.w) / 2
-		love.graphics.draw(game.images.title, xTitle, 32)
-
-		xPlay = (game.wCanvas - introConstants.INTRO_PLAY_COORD.w) / 2
-		love.graphics.draw(game.images.play, xTitle, game.hCanvas - 80)
-
-		local stepIntro = 0.61
-		local xUnits = xTitle + 100
-		local xPts = xUnits + 40
-
-		if (intro.timeCounter > (stepIntro)) then
-			love.graphics.draw(game.images.unitC, xUnits,  180)
-			if (intro.timeCounter > (stepIntro * 2)) then
-				love.graphics.draw(game.images.unitCPts, xPts,  180 + 9)
-				if (intro.timeCounter > (stepIntro * 3)) then
-					love.graphics.draw(game.images.unitB, xUnits,  230)
-					if (intro.timeCounter > (stepIntro * 4)) then
-						love.graphics.draw(game.images.unitBPts, xPts,  230 + 9)
-						if (intro.timeCounter > (stepIntro * 5)) then
-							love.graphics.draw(game.images.unitA, xUnits,  280)
-							if (intro.timeCounter > (stepIntro * 6)) then
-								love.graphics.draw(game.images.unitAPts, xPts,  280 + 9)
-								if (intro.timeCounter > (stepIntro * 7)) then
-									love.graphics.draw(game.images.spaceship, xUnits,  330)
-									if (intro.timeCounter > (stepIntro * 8)) then
-										love.graphics.draw(game.images.spaceshipPts, xPts,  330 + 5)
-									end
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-
+		intro:showTitle()
+		intro:showPlayButton()
+		intro:showUnitsAndPoints()
 	else
-
-
 		for i=1, #drawableList do
 			drawableList[i]:draw()
 		end
@@ -112,16 +77,12 @@ function love.update(dt)
 			updatableList[i]:update(dt)
 		end
 
-		removeItems(updateListRemove, updatableList)
-		removeItems(drawableListRemove, drawableList)
-		removeItems(gameListRemove, gameList)
-		removeItems(spaceshipListRemove, spaceshipList)
-		removeItems(bulletListRemove, bulletList)
-		removeItems(blockListRemove, blockList)
-		removeItems(invaderListRemove, invaderList)
-		removeItems(cannonListRemove, cannonList)
+		removeAllItens()
 
-		if #invaderList == 0 then
+
+
+		--if #invaderList == 0 then
+		if endOfWave() then
 
 			if delayToNextWave <= 0 then
 				wave = WaveBuilder:new(
@@ -201,7 +162,19 @@ function love.keypressed(k)
 end
 
 
+function removeAllItens()
 
+
+		removeItems(updateListRemove, updatableList)
+		removeItems(drawableListRemove, drawableList)
+		removeItems(gameListRemove, gameList)
+		removeItems(spaceshipListRemove, spaceshipList)
+		removeItems(bulletListRemove, bulletList)
+		removeItems(blockListRemove, blockList)
+		removeItems(invaderListRemove, invaderList)
+		removeItems(cannonListRemove, cannonList)
+
+end
 
 function removeItems(itemsToRemove, source)
 	for i=1, #itemsToRemove do
@@ -264,6 +237,23 @@ function drawIntro()
 
 end
 
+
+function endOfWave()
+
+	local stillInvaders = #invaderList
+	local stillSpaceship = #spaceshipList
+	local endOfWave = true
+
+	if stillInvaders > 0 or stillSpaceship > 0 then
+
+		endOfWave = false
+
+	end
+
+	return endOfWave
+
+
+end
 
 
 

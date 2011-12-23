@@ -1,30 +1,37 @@
-delay entre canhões
-tela de game over
-limitar numero de naves por onda
-diferentes balas invasores
-variar velocidade das naves
-ranking
-mudar escudos
-explosão morte invasor
-esperar nave passar para nova onda
-montar onda linha por linha e parar tiros
-mudar fundo
-mudar canhão
+onda nova deve esperar nave acabar de passar (2)
+tela de game over (5)
+limitar numero de naves por onda (3)
+diferentes balas invasores (8)
+variar velocidade das naves (5)
+ranking (21)
+mudar escudos (21)
+explosão morte invasor (13)
+esperar nave passar para nova onda (5)
+montar onda linha por linha e parar tiros (8)
+mudar fundo (5)
+mudar canhão (8)
+invasores aceleram a cada onda (3)
+bonus por precisão (3)
+bonus por velocidade (3)
+reduzir velocidade dos invasores (3)
+aumentar frequencia de disparo do canhão (2)
+regenerar escudo (5)
+só destruir invasores com tiros mais precisos (5)
+diminuir velocidade quando chega no escudo (3)
+mudar explosão (8)
 
-bonus por precisão
-bonus por velocidade
-reduzir velocidade dos invasores
-aumentar frequencia de disparo do canhão
-regenerar escudo
-
-só destruir invasores com tiros mais precisos
-diminuir velocidade quando chega no escudo
-mudar explosão
+(138)
 
 
 
 complete:
 
+sprint natal
+delay entre canhões (1)
+
+
+
+===============
 game over quando os invasores chegam ao canhão
 nave atravessando em cima
 - sorteia valor
