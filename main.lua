@@ -12,12 +12,14 @@ require ("lua.block")
 require ("lua.invader")
 require ("lua.spaceship")
 require ("lua.wave")
+require ("lua.counter")
 require ("lua.collisionmanager")
 
 
 function love.load()
 
 	game = GameBuilder:new()
+
 
 	spriteBatch = game.spriteBatch
 	gameState = game.state
