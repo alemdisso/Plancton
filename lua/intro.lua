@@ -10,6 +10,8 @@ IntroBuilder = createClass(Intro, Updatable, Drawable)
 function Intro:new()
 	introList[#introList+1] = self
 
+	self:initCounterAndStep()
+
 	local myCounter = CounterBuilder:new()
 	myCounter:time(introConstants.INTRO_DELAY_TO_SHOW_1ST_UNIT)
 
@@ -18,6 +20,8 @@ function Intro:new()
 	self.show1stUnitCounter = myCounter
 
 	self.currentStep = 0
+
+	self:initLines()
 
 
 	local xTitle = (game.wCanvas - introConstants.INTRO_TITLE_COORD.w) / 2
@@ -110,6 +114,26 @@ function Intro:update(dt)
 		end
 	end
 end
+
+function Intro:initCounterAndStep()
+
+	local myCounter = CounterBuilder:new()
+	myCounter:time(introConstants.INTRO_DELAY_TO_SHOW_1ST_UNIT)
+
+	myCounter:start()
+
+	self.show1stUnitCounter = myCounter
+
+	self.currentStep = 0
+end
+
+
+function Intro:initLines()
+
+
+end
+
+
 
 function Intro:checkForClickOnPlayButton()
 

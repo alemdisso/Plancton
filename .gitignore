@@ -1,0 +1,4 @@
+$ cat .gitignore
+
+# ignore gimp work files
+*.xcf
