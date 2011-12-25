@@ -1,3 +1,4 @@
+require ("lua.counter")
 
 overList = {}
 overListRemove = {}
@@ -10,8 +11,8 @@ OverBuilder = createClass(Over)
 function Over:new()
 
 	overList[#overList+1] = self
-
-	self.overImages = self:loadImages()
+	--self.overImages = self:loadImages()
+	self:initTimeline()
 
 	return self
 end
@@ -24,11 +25,24 @@ end
 
 
 function Over:draw()
-
+	if game.state == gameConstants.GAME_OVER then
+		self:showPlayAgain()
+		self:showGameOver()
+	end
 end
 
 function Over:update(dt)
 	if game.state == gameConstants.GAME_OVER then
+
+
+		local counter = self.timelineCounter
+
+		if not counter.running then
+			counter:start()
+		else
+			counter:update(dt)
+		end
+
 		if love.mouse.isDown("l") then
 
 			local overImages = self.overImages
@@ -36,10 +50,8 @@ function Over:update(dt)
 			if x >= 160 and x <= 400
 				and y >= 150 and y <= 300 then
 
-
 				updatableList = {}
 				drawableList = {}
-				--collisionManager.collisionTables={}
 				waveList={}
 				invaderList = {}
 				cannonList = {}
@@ -72,58 +84,51 @@ function Over:update(dt)
 	end
 end
 
-function Over:loadImages()
+function Over:initTimeline()
 
-	local overImages = {
-		["title"] = {img={}, x=0, y=0,},
-		["keyboard"] = {img={}, x=0, y=0,},
-		["mouse"] = {img={}, x=0, y=0,},
-		}
+	local myCounter = CounterBuilder:new()
+	myCounter:time(0)
 
-	local titleSprite = SpriteClass.new(overConstants.OVER_TITLE_SPRITE)
-	local titleImgSource = love.image.newImageData(overConstants.OVER_TITLE_COORD.w, overConstants.OVER_TITLE_COORD.h)
-	titleImgSource:paste(titleSprite.userData, 0, 0, 0, 0)
-	overImages.title.img = love.graphics.newImage(titleImgSource)
-	overImages.title.x = overConstants.OVER_TITLE_COORD.x
-	overImages.title.y = overConstants.OVER_TITLE_COORD.y
-
-	local keyboardSprite = SpriteClass.new(overConstants.OVER_KEYBOARD_SPRITE)
-	local keyboardImgSource = love.image.newImageData(overConstants.OVER_KEYBOARD_COORD.w, overConstants.OVER_KEYBOARD_COORD.h)
-	keyboardImgSource:paste(keyboardSprite.userData, 0, 0, 0, 0)
-	overImages.keyboard.img = love.graphics.newImage(keyboardImgSource)
-	overImages.keyboard.x = overConstants.OVER_KEYBOARD_COORD.x
-	overImages.keyboard.y = overConstants.OVER_KEYBOARD_COORD.y
-
-	local mouseSprite = SpriteClass.new(overConstants.OVER_MOUSE_SPRITE)
-	local mouseImgSource = love.image.newImageData(overConstants.OVER_MOUSE_COORD.w, overConstants.OVER_MOUSE_COORD.h)
-	mouseImgSource:paste(mouseSprite.userData, 0, 0, 0, 0)
-	overImages.mouse.img = love.graphics.newImage(mouseImgSource)
-	overImages.mouse.x = overConstants.OVER_MOUSE_COORD.x
-	overImages.mouse.y = overConstants.OVER_MOUSE_COORD.y
-
-
-	return overImages
+	self.timelineCounter = myCounter
+	self.currentStep = 0
 end
 
 
-
-
-function Over:showOptions()
-
-
-	local font = love.graphics.newFont(gameConstants.GAME_FONT, 48)
-	love.graphics.setFont(font)
-
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.print("PLAY AGAIN",160, 200)
-
-	love.graphics.print("TERMINAR",160, 320)
-
-	love.graphics.setColor(255, 255, 255, 255)
-
-
-
+function Over:showPlayAgain()
+	local xImage = (game.wCanvas - overConstants.OVER_PLAY_AGAIN_COORD.w) / 2
+	local yImage = 30 + (game.hCanvas - overConstants.OVER_PLAY_AGAIN_COORD.h) / 2
+	love.graphics.draw(game.images.playAgain, xImage, yImage)
 
 end
+
+function Over:showGameOver()
+
+	local letters = game.images.gameOver
+	local stepIntro = 0.5
+	local timeCounter = self.timelineCounter
+	local currentTime = timeCounter:time()
+	local step
+	local currentStep = self.currentStep
+
+	if currentStep < #letters then
+		step = math.floor(currentTime /stepIntro)
+	else
+		step = #letters
+	end
+		self.currentStep = step
+
+	local xImage = (game.wCanvas - overConstants.OVER_GAME_OVER_COORD.w) / 2
+	local yImage = ((game.hCanvas - overConstants.OVER_GAME_OVER_COORD.h) / 2) -30
+
+	for i = 1, step do
+		local letterImage = game.images.gameOver[i]
+
+		love.graphics.draw(letterImage, xImage, yImage)
+		xImage = xImage + letterImage:getWidth()
+	end
+
+end
+
+
 
 
