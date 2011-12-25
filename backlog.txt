@@ -1,4 +1,3 @@
-tela de game over (5)
 limitar numero de naves por onda (3)
 diferentes balas invasores (8)
 variar velocidade das naves (5)
@@ -28,6 +27,7 @@ complete:
 sprint natal
 delay entre canhões (1)
 onda nova deve esperar nave acabar de passar (2)
+tela de game over (5)
 
 
 ===============

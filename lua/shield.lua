@@ -20,15 +20,6 @@ function Shield:new()
 	self.pos = {x=0, y=0, z=3}
 	self.blocks = blocks or {}
 
-	-- shield dragging
---[[
-	self.dragging = {}
-	self.dragging.active = false
-	self.dragging.diffx = 0
-	self.dragging.diffy = 0
-]]
-	-- // shield dragging
-
 	return self
 end
 
@@ -44,15 +35,6 @@ function Shield:draw()
 end
 
 function Shield:update(dt)
-
-	-- shield dragging
---[[	if self.dragging.active then
-		self.pos.x = love.mouse.getX() - self.dragging.diffx
-		self.pos.y = love.mouse.getY() - self.dragging.diffy
-	end
-]]
-	-- // shield dragging
-
 
 end
 

@@ -1,3 +1,4 @@
+require ("lua.counter")
 
 introList = {}
 introListRemove = {}
@@ -10,19 +11,61 @@ IntroBuilder = createClass(Intro, Updatable, Drawable)
 function Intro:new()
 	introList[#introList+1] = self
 
-	self:initCounterAndStep()
-
-	local myCounter = CounterBuilder:new()
-	myCounter:time(introConstants.INTRO_DELAY_TO_SHOW_1ST_UNIT)
-
-	myCounter:start()
-
-	self.show1stUnitCounter = myCounter
-
-	self.currentStep = 0
+	self:initTimeline()
 
 	self:initLines()
 
+	return self
+end
+
+
+function Intro:destroy()
+	self.active = false
+	introListRemove[#introListRemove+1] = self
+end
+
+function Intro:draw()
+	if game.state == gameConstants.GAME_INTRO then
+		self:showTitle()
+		self:showPlayButton()
+		self:showUnitsAndPoints()
+	end
+
+end
+
+function Intro:update(dt)
+	local counter = self.show1stUnitCounter
+	counter:update(dt)
+
+	self:checkButtonWhileInIntro()
+
+end
+
+function Intro:checkButtonWhileInIntro()
+
+	if game.state == gameConstants.GAME_INTRO then
+		if love.mouse.isDown("l") then
+			if self:checkForClickOnPlayButton() then
+				--game.state = gameConstants.GAME_OVER
+				game.state = gameConstants.GAME_PLAY_KEYBOARD
+			end
+		end
+	end
+
+end
+
+function Intro:initTimeline()
+
+	local myCounter = CounterBuilder:new()
+	myCounter:time(introConstants.INTRO_DELAY_TO_SHOW_1ST_UNIT)
+	myCounter:start()
+
+	self.show1stUnitCounter = myCounter
+	self.currentStep = 0
+end
+
+
+function Intro:initLines()
 
 	local xTitle = (game.wCanvas - introConstants.INTRO_TITLE_COORD.w) / 2
 	local xUnits = xTitle + 100
@@ -73,62 +116,23 @@ function Intro:new()
 				showFunction = function(x,y) self:show3rdUnitPts(x,y) end,
 			}
 		},
-		dataSpaceshipUnit = {
+		dataSpaceship = {
 			unit= {
 				step = 7,
 				x=xUnits,
 				y=330,
-				showFunction = function(x,y) self:showSpaceshipUnit(x,y) end,
+				showFunction = function(x,y) self:showSpaceship(x,y) end,
 			},
 			pts={
 				step=8,
 				x=xPts,
 				y=335,
-				showFunction = function(x,y) self:showSpaceshipUnitPts(x,y) end,
+				showFunction = function(x,y) self:showSpaceshipPts(x,y) end,
 			}
 		},
 	}
 
 	self.lines = lines
-
-	return self
-end
-
-
-function Intro:destroy()
-	self.active = false
-	introListRemove[#introListRemove+1] = self
-end
-
-function Intro:draw()
-
-end
-
-function Intro:update(dt)
-	local counter = self.show1stUnitCounter
-	counter:update(dt)
-
-	if game.state == gameConstants.GAME_INTRO then
-		if love.mouse.isDown("l") then
-			self:checkForClickOnPlayButton()
-		end
-	end
-end
-
-function Intro:initCounterAndStep()
-
-	local myCounter = CounterBuilder:new()
-	myCounter:time(introConstants.INTRO_DELAY_TO_SHOW_1ST_UNIT)
-
-	myCounter:start()
-
-	self.show1stUnitCounter = myCounter
-
-	self.currentStep = 0
-end
-
-
-function Intro:initLines()
 
 
 end
@@ -146,8 +150,10 @@ function Intro:checkForClickOnPlayButton()
 
 	if x >= xPlay and x <= xPlay + w
 		and y >= yPlay and y <= yPlay + h then
-		game.state = gameConstants.GAME_PLAY_KEYBOARD
+		return true
 	end
+
+	return false
 
 end
 
@@ -172,7 +178,6 @@ function Intro:showUnitsAndPoints()
 
 	local timeCounter = self.show1stUnitCounter
 	local currentTime = timeCounter:time()
-	local remainder = (currentTime % stepIntro)
 	local whichStep = math.floor(currentTime /stepIntro)
 	self.xUnits = xUnits
 	self.xPts = xPts
@@ -225,7 +230,7 @@ function Intro:show3rdUnitPts(x,y)
 end
 
 function Intro:showSpaceshipLine()
-	self:showLine(self.lines.dataSpaceshipUnit)
+	self:showLine(self.lines.dataSpaceship)
 end
 
 function Intro:showSpaceship(x,y)

@@ -139,6 +139,8 @@ function Game:loadImages()
 	images["spaceshipPts"] = self:loadSpaceshipPtsImage()
 	images["cannon"] = self:loadCannonImages()
 	images["invaderUnits"] = self:loadInvaderUnitImages()
+	images["playAgain"] = self:loadPlayAgainImage()
+	images["gameOver"] = self:loadGameOverImages()
 
 	self.images = images
 
@@ -193,6 +195,34 @@ end
 
 function Game:loadSpaceshipPtsImage()
 	return self:loadImage(introConstants.INTRO_SPACESHIP_PTS_COORD)
+end
+
+function Game:loadPlayAgainImage()
+	return self:loadImage(overConstants.OVER_PLAY_AGAIN_COORD)
+end
+
+function Game:loadGameOverImages()
+	local yLettersGameOver = overConstants.OVER_GAME_OVER_Y_LETTERS
+	local fullImageCoordinate = overConstants.OVER_GAME_OVER_COORD
+	print ("FULL ", fullImageCoordinate.spriteX, fullImageCoordinate.spriteY, fullImageCoordinate.w, fullImageCoordinate.h)
+	local letterCoordinate = {spriteX = fullImageCoordinate.spriteX, spriteY = fullImageCoordinate.spriteY, w=0, h=30 }
+	local images = {}
+
+	for i=1, #yLettersGameOver do
+		local w = 0
+		letterCoordinate.spriteX = yLettersGameOver[i]
+		if i < #yLettersGameOver then
+			w = yLettersGameOver[i+1] - yLettersGameOver[i]
+		else
+			w = fullImageCoordinate.w - yLettersGameOver[i]
+		end
+		letterCoordinate.w = w
+		print ( letterCoordinate.spriteX, letterCoordinate.spriteY, letterCoordinate.w, letterCoordinate.h)
+		images[i] = self:loadImage(letterCoordinate)
+	end
+
+	return images
+
 end
 
 

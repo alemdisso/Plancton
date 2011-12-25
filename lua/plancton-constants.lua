@@ -176,12 +176,10 @@ spaceshipConstants = protect_table (spaceshipConstants)
 
 overConstants =
   {
-  OVER_TITLE_SPRITE = "resources/images/title.png",
-  OVER_MOUSE_SPRITE = "resources/images/mouse.png",
-  OVER_KEYBOARD_SPRITE = "resources/images/keyboard.png",
-  OVER_TITLE_COORD = {x=4, y=32, w=798, h=230},
-  OVER_MOUSE_COORD = {x=143, y=300, w=474, h=35},
-  OVER_KEYBOARD_COORD = {x=126, y=360, w=520, h=35},
+  OVER_PLAY_AGAIN_COORD = {spriteX=0, spriteY=230, w=170, h=15},
+  OVER_PLAY_BUTTON_COORD = {x=150, y=400, w=170, h=16},
+  OVER_GAME_OVER_COORD = {spriteX=0, spriteY=245, w=294, h=30},
+  OVER_GAME_OVER_Y_LETTERS ={0, 27, 51, 85, 133, 162, 208, 238, 267}
 
   }
 

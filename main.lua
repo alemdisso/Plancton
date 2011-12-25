@@ -12,7 +12,6 @@ require ("lua.block")
 require ("lua.invader")
 require ("lua.spaceship")
 require ("lua.wave")
-require ("lua.counter")
 require ("lua.collisionmanager")
 
 
@@ -22,7 +21,7 @@ function love.load()
 
 
 	spriteBatch = game.spriteBatch
-	gameState = game.state
+	--gameState = game.state
 	bg = game.bg
 	font = game.font
 	intro = IntroBuilder:new()
@@ -48,12 +47,13 @@ function love.draw()
 	love.graphics.setColor(255,255,255,255)
 	love.graphics.draw(bg)
 	if game.state == gameConstants.GAME_OVER then
-		over:showOptions()
+		over:draw()
 
 	elseif game.state == gameConstants.GAME_INTRO then
-		intro:showTitle()
-		intro:showPlayButton()
-		intro:showUnitsAndPoints()
+		intro:draw()
+		--intro:showTitle()
+		--intro:showPlayButton()
+		--intro:showUnitsAndPoints()
 	else
 		for i=1, #drawableList do
 			drawableList[i]:draw()
@@ -72,7 +72,7 @@ function love.update(dt)
 		intro:update(dt)
 
 	elseif  game.state == gameConstants.GAME_OVER then
-		over:update()
+		over:update(dt)
 
 	else
 		for i=1, #updatableList do
@@ -116,6 +116,7 @@ function love.update(dt)
 				end
 
 				game.state = gameConstants.GAME_OVER
+				print ("FUI... " .. #game.images.gameOver)
 			end
 		else
 			local cannon = cannonList[1]
@@ -156,8 +157,8 @@ function love.keypressed(k)
 	if game.state == gameConstants.GAME_INTRO then
 		if k == " " or k == "return" then
 			game.state = gameConstants.GAME_PLAY_KEYBOARD
-		else
-			print (k)
+		--else
+			--print (k)
 		end
 	end
 
