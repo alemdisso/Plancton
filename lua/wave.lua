@@ -18,6 +18,7 @@ function Wave:new()
 	self:loadInvadersImages()
 	self:loadSpaceshipImages()
 	self:initFormation()
+	print (self.availableSpaceships)
 	self:engage()
 
 	return self
@@ -59,10 +60,13 @@ function Wave:update(dt)
 		self:moveUnits(shiftMovement, step)
 
 		local delayToNextSpaceship = self.delayToNextSpaceship
+		local availableSpaceships = self.availableSpaceships
 
-		if self.delayToNextSpaceship <= 0  then
+		if self.delayToNextSpaceship <= 0  and availableSpaceships > 0 then
 			self:launchSpaceship()
+			print (availableSpaceships)
 			self.delayToNextSpaceship = math.random(waveConstants.WAVE_SPACESHIP_MIN_DELAY, waveConstants.WAVE_SPACESHIP_MAX_DELAY)
+			self.availableSpaceships = self.availableSpaceships - 1
 		else
 			self.delayToNextSpaceship = self.delayToNextSpaceship - dt
 		end
@@ -135,6 +139,8 @@ function Wave:initFormation()
 	self.direction = "right"
 	self.speedX = self.speedX or waveConstants.WAVE_SPEED_X
 	self.speedY = self.speedY or waveConstants.WAVE_SPEED_Y
+
+	self.availableSpaceships = waveConstants.WAVE_MAX_SPACESHIPS
 
 end
 

@@ -79,6 +79,7 @@ waveConstants =
   WAVE_SPACESHIP_MAX_DELAY = 17,--40,
   WAVE_SPACESHIP = {x=168, y=71, w=20, h=13},
   WAVE_SPACESHIP_MOTION_STEPS=1,
+  WAVE_MAX_SPACESHIPS = 5,
 
 --[[
   WAVE_MIN_DELAY = 1,
@@ -125,9 +126,13 @@ shieldConstants =
 	SHIELD_NUM_COLUMNS = 5,
 	SHIELD_VOID_BLOCK = {line=3, column=3},
 	SHIELD_HITS_BLOCK = 3,
-	SHIELD_SPRITE = "resources/images/shield.png",
-	SHIELD_WIDTH = 105,
-	SHIELD_HEIGHT = 60,
+	--SHIELD_SPRITE = "resources/images/shield.png",
+	SHIELD_SPRITE = "resources/images/shield-redux.png",
+	--SHIELD_WIDTH = 105,
+	--SHIELD_HEIGHT = 60,
+	SHIELD_WIDTH = 60,
+	SHIELD_HEIGHT = 54,
+
 	SHIELD_HIT_SOUND = "resources/audio/shieldhit.wav",
 	SHIELD_HIT_SOUND_VOLUME = 0.8,
 	SHIELD_HIT_SOUND_PITCH = 1,
