@@ -141,6 +141,8 @@ function Game:loadImages()
 	images["invaderUnits"] = self:loadInvaderUnitImages()
 	images["playAgain"] = self:loadPlayAgainImage()
 	images["gameOver"] = self:loadGameOverImages()
+	images["invaderBullet"] = self:loadInvaderBulletImages()
+	images["cannonBullet"] = self:loadCannonBulletImages()
 
 	self.images = images
 
@@ -204,7 +206,6 @@ end
 function Game:loadGameOverImages()
 	local yLettersGameOver = overConstants.OVER_GAME_OVER_Y_LETTERS
 	local fullImageCoordinate = overConstants.OVER_GAME_OVER_COORD
-	print ("FULL ", fullImageCoordinate.spriteX, fullImageCoordinate.spriteY, fullImageCoordinate.w, fullImageCoordinate.h)
 	local letterCoordinate = {spriteX = fullImageCoordinate.spriteX, spriteY = fullImageCoordinate.spriteY, w=0, h=30 }
 	local images = {}
 
@@ -217,13 +218,14 @@ function Game:loadGameOverImages()
 			w = fullImageCoordinate.w - yLettersGameOver[i]
 		end
 		letterCoordinate.w = w
-		print ( letterCoordinate.spriteX, letterCoordinate.spriteY, letterCoordinate.w, letterCoordinate.h)
 		images[i] = self:loadImage(letterCoordinate)
 	end
 
 	return images
 
 end
+
+
 
 
 function Game:loadSounds()
@@ -433,3 +435,65 @@ function Game:loadInvaderUnitImages()
 	return imgArray
 
 end
+
+
+function Game:loadInvaderBulletImages()
+
+	local bullets = {invaderConstants.INVADER_BULLET_A_COORD, invaderConstants.INVADER_BULLET_B_COORD, invaderConstants.INVADER_BULLET_C_COORD}
+	local imgArray = {}
+	local index = 0
+
+	for i,v in ipairs(bullets) do
+		local bulletCoordinates = v
+		local spriteX = bulletCoordinates.spriteX
+		local spriteY = bulletCoordinates.spriteY
+		local regionWidth = bulletCoordinates.w
+		local regionHeight = bulletCoordinates.h
+		local imgSource = {}
+
+		for j = 1, invaderConstants.INVADER_BULLET_MOTION_STEPS do
+			index = index + 1
+			local coordinates = {spriteX=0, spriteY=0, w=0, h=0}
+			coordinates.spriteX = ((j-1) * bulletCoordinates.w) + bulletCoordinates.spriteX
+			coordinates.spriteY = bulletCoordinates.spriteY
+			coordinates.w = bulletCoordinates.w
+			coordinates.h = bulletCoordinates.h
+			imgArray[index] = self:loadImage(coordinates)
+		end
+
+	end
+
+	return imgArray
+
+end
+
+
+
+function Game:loadCannonBulletImages()
+	local bullets = {cannonConstants.CANNON_BULLET_COORD}
+	local imgArray = {}
+	local index = 0
+
+	for i,v in ipairs(bullets) do
+		local bulletCoordinates = v
+		local spriteX = bulletCoordinates.spriteX
+		local spriteY = bulletCoordinates.spriteY
+		local regionWidth = bulletCoordinates.w
+		local regionHeight = bulletCoordinates.h
+		local imgSource = {}
+
+		for j = 1, cannonConstants.CANNON_BULLET_MOTION_STEPS do
+			index = index + 1
+			local coordinates = {spriteX=0, spriteY=0, w=0, h=0}
+			coordinates.spriteX = ((j-1) * bulletCoordinates.w) + bulletCoordinates.spriteX
+			coordinates.spriteY = bulletCoordinates.spriteY
+			coordinates.w = bulletCoordinates.w
+			coordinates.h = bulletCoordinates.h
+			imgArray[index] = self:loadImage(coordinates)
+		end
+
+	end
+	return imgArray
+
+end
+

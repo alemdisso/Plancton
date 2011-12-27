@@ -79,15 +79,7 @@ waveConstants =
   WAVE_SPACESHIP_MAX_DELAY = 17,--40,
   WAVE_SPACESHIP = {x=168, y=71, w=20, h=13},
   WAVE_SPACESHIP_MOTION_STEPS=1,
-  WAVE_MAX_SPACESHIPS = 5,
-
---[[
-  WAVE_MIN_DELAY = 1,
-  WAVE_MAX_DELAY = 5,
-  WAVE_INVADER_A = {x=65, y=50, w=25, h=32, pts=40, minDelay=2, maxDelay=5},
-  WAVE_INVADER_B = {x=115, y=50, w=27, h=32, pts=20, minDelay=2, maxDelay=6},
-  WAVE_INVADER_C = {x=0, y=50, w=32, h=32, pts=10, minDelay=2, maxDelay=4},
-]]
+  WAVE_MAX_SPACESHIPS_ARRAY = {3, 4, 4, 4, 5, 5, 5, 5, 6},
   WAVE_SPACE_BETWEEN_COLUMNS = 4,
   WAVE_SPACE_BETWEEN_LINES = 1,
   WAVE_DELAY_TO_NEXT_WAVE = 1,
@@ -103,6 +95,8 @@ cannonConstants =
 	CANNON_SPRITE_X = 0,
 	CANNON_SPRITE_Y = 0,
 	CANNON_BULLET_HIT_IMPACT = 1,
+	CANNON_BULLET_COORD = {spriteX=220, spriteY=0, w=3, h=10},
+	CANNON_BULLET_MOTION_STEPS=1,
 	--CANNON_INTERVAL_FIRE=0.2,
 	CANNON_INTERVAL_FIRE=0.5,
 	CANNON_IMAGE_COORD = {spriteX=0, spriteY=0, w=55, h=50},
@@ -126,10 +120,7 @@ shieldConstants =
 	SHIELD_NUM_COLUMNS = 5,
 	SHIELD_VOID_BLOCK = {line=3, column=3},
 	SHIELD_HITS_BLOCK = 3,
-	--SHIELD_SPRITE = "resources/images/shield.png",
 	SHIELD_SPRITE = "resources/images/shield-redux.png",
-	--SHIELD_WIDTH = 105,
-	--SHIELD_HEIGHT = 60,
 	SHIELD_WIDTH = 60,
 	SHIELD_HEIGHT = 54,
 
@@ -156,6 +147,12 @@ invaderConstants =
 	INVADER_DEATH_SOUND = "resources/audio/aliendeath.wav",
 	INVADER_DEATH_SOUND_VOLUME = 1,
 	INVADER_DEATH_SOUND_PITCH = 1,
+	INVADER_BULLET_A_COORD = {spriteX=234, spriteY=0, w=5, h=13},
+	INVADER_BULLET_B_COORD = {spriteX=246, spriteY=0, w=5, h=13},
+	INVADER_BULLET_C_COORD = {spriteX=257, spriteY=0, w=5, h=13},
+	INVADER_BULLET_MOTION_STEPS=2,
+	INVADER_BULLETS_ARRAY = {1, 1, 2, 2, 2, 2, 3, 3, 3},
+	INVADER_BULLETS_SPEED_ARRAY = {143, 143, 150, 150, 150, 153, 157},
   }
 
 invaderConstants = protect_table (invaderConstants)
@@ -174,6 +171,7 @@ spaceshipConstants =
 	SPACESHIP_TIME_SHOWING_POINTS = 2,
 	SPACESHIP_TRAVEL_SPEED = 70,
 	SPACESHIP_Y_ORBIT = 45,
+	SPACESHIP_TRAVEL_SPEED_ARRAY = {58, 63, 63, 70, 70, 70, 70, 70, 70, 77, 77, 82},
   }
 
 spaceshipConstants = protect_table (spaceshipConstants)

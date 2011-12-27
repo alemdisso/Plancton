@@ -109,10 +109,6 @@ end
 
 function Invader:loadSounds()
 
-	--self.shotSound = self:loadBulletSound()
-	--self.deathSound = self:loadDeathSound()
-	--self.shotSound = game.sounds.invaderShot
-	--self.deathSound = game.sounds.invaderDeath
 	self.shotSound = game:loadInvaderShotSound()
 	self.deathSound = game:loadInvaderDeathSound()
 

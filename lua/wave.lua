@@ -18,7 +18,6 @@ function Wave:new()
 	self:loadInvadersImages()
 	self:loadSpaceshipImages()
 	self:initFormation()
-	print (self.availableSpaceships)
 	self:engage()
 
 	return self
@@ -64,7 +63,6 @@ function Wave:update(dt)
 
 		if self.delayToNextSpaceship <= 0  and availableSpaceships > 0 then
 			self:launchSpaceship()
-			print (availableSpaceships)
 			self.delayToNextSpaceship = math.random(waveConstants.WAVE_SPACESHIP_MIN_DELAY, waveConstants.WAVE_SPACESHIP_MAX_DELAY)
 			self.availableSpaceships = self.availableSpaceships - 1
 		else
@@ -74,11 +72,7 @@ function Wave:update(dt)
 		WaveBuilder:destroy(self)
 	end
 
-
-
 end
-
-
 
 function Wave:loadInvadersImages()
 
@@ -140,7 +134,9 @@ function Wave:initFormation()
 	self.speedX = self.speedX or waveConstants.WAVE_SPEED_X
 	self.speedY = self.speedY or waveConstants.WAVE_SPEED_Y
 
-	self.availableSpaceships = waveConstants.WAVE_MAX_SPACESHIPS
+	local maxArray = waveConstants.WAVE_MAX_SPACESHIPS_ARRAY
+	local seedMax = math.random(#maxArray)
+	self.availableSpaceships = maxArray[seedMax]
 
 end
 
@@ -157,7 +153,6 @@ function Wave:engage()
 	end
 
 	self.delayToNextSpaceship = math.random(waveConstants.WAVE_SPACESHIP_MIN_DELAY, waveConstants.WAVE_SPACESHIP_MAX_DELAY)
-
 
 	return self
 
@@ -299,7 +294,6 @@ function Wave:spaceToShift(pace)
 	local leftProtection = 0
 	local rightProtection = self.width + canvasMargin
 
-
 	local direction = self.direction
 	local newMaxX = self.maxX + pace + rightProtection
 	local newMinX = self.minX + pace - leftProtection
@@ -316,7 +310,6 @@ function Wave:spaceToShift(pace)
 	return spaceToShift
 
 end
-
 
 function Wave:moveUnits(shiftMovement, step)
 

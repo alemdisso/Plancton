@@ -145,7 +145,10 @@ function Spaceship:chooseDirection()
 	local oddOrEven = math.random(2)
 	local wCanvas = self.wCanvas
 	local orbit = spaceshipConstants.SPACESHIP_Y_ORBIT
-	local speed = spaceshipConstants.SPACESHIP_TRAVEL_SPEED
+
+	local speedArray = spaceshipConstants.SPACESHIP_TRAVEL_SPEED_ARRAY
+	local seedSpeed = math.random(#speedArray)
+	local speed = speedArray[seedSpeed]
 
 	if oddOrEven == 1 then
 		local initX = 0-self.width

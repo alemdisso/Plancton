@@ -58,7 +58,6 @@ function love.draw()
 		for i=1, #drawableList do
 			drawableList[i]:draw()
 		end
-
 		game:printScore()
 		game:showLives()
 

@@ -1,11 +1,11 @@
-diferentes balas invasores (8)
 variar velocidade das naves (5)
+novo canhão a cada onda, não a cada 1000 (1)
 explosão morte invasor (13)
-esperar nave passar para nova onda (5)
 montar onda linha por linha e parar tiros (8)
 mudar fundo (5)
 mudar canhão (8)
-ranking (21)
+mudar explosão canhão (8)
+opção de repetição de tiro: uma bala por vez vs frequencia (13)
 invasores aceleram a cada onda (3)
 bonus por precisão (3)
 bonus por velocidade (3)
@@ -14,10 +14,7 @@ aumentar frequencia de disparo do canhão (2)
 regenerar escudo (5)
 só destruir invasores com tiros mais precisos (5)
 diminuir velocidade quando chega no escudo (3)
-mudar explosão (8)
-
-(138)
-
+ranking (21)
 
 
 complete:
@@ -28,6 +25,8 @@ onda nova deve esperar nave acabar de passar (2)
 tela de game over (5)
 limitar numero de naves por onda (3)
 mudar escudos (21)
+esperar nave passar para nova onda (5)
+diferentes balas invasores (8)
 
 ===============
 game over quando os invasores chegam ao canhão
