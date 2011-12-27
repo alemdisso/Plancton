@@ -337,13 +337,14 @@ function Game:addPointsToScore(points)
 
 	self.score = self.score + points
 
+--[[
 	local pointsSinceLastLife = self.score - self.lastExtraLife
 
 	if pointsSinceLastLife > 1000 then
 		self.lives = self.lives + 1
 		self.lastExtraLife = math.floor(self.score - (self.score%1000))
 	end
-
+]]
 end
 
 function Game:printScore()

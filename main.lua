@@ -80,12 +80,13 @@ function love.update(dt)
 
 		removeAllItens()
 
-
-
 		--if #invaderList == 0 then
 		if endOfWave() then
 
+
+
 			if delayToNextWave <= 0 then
+				game.lives = game.lives + 1
 				wave = WaveBuilder:new(
 					{
 						numLines = waveConstants.WAVE_LINES,
@@ -115,7 +116,6 @@ function love.update(dt)
 				end
 
 				game.state = gameConstants.GAME_OVER
-				print ("FUI... " .. #game.images.gameOver)
 			end
 		else
 			local cannon = cannonList[1]
