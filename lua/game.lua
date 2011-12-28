@@ -143,6 +143,7 @@ function Game:loadImages()
 	images["gameOver"] = self:loadGameOverImages()
 	images["invaderBullet"] = self:loadInvaderBulletImages()
 	images["cannonBullet"] = self:loadCannonBulletImages()
+	images["invaderExplosion"] = self:loadInvaderExplosionImages()
 
 	self.images = images
 
@@ -337,14 +338,6 @@ function Game:addPointsToScore(points)
 
 	self.score = self.score + points
 
---[[
-	local pointsSinceLastLife = self.score - self.lastExtraLife
-
-	if pointsSinceLastLife > 1000 then
-		self.lives = self.lives + 1
-		self.lastExtraLife = math.floor(self.score - (self.score%1000))
-	end
-]]
 end
 
 function Game:printScore()
@@ -437,6 +430,23 @@ function Game:loadInvaderUnitImages()
 
 end
 
+function Game:loadInvaderExplosionImages()
+
+	local explosions = {waveConstants.WAVE_INVADER_EXPLOSION}
+	local imgArray = {}
+	local index = 0
+
+
+	for i,explosionCoordinates in ipairs(explosions) do
+
+		imgArray[i] = self:loadImage(explosionCoordinates)
+
+	end
+
+
+	return imgArray
+
+end
 
 function Game:loadInvaderBulletImages()
 

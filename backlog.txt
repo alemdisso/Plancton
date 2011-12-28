@@ -1,6 +1,5 @@
-novo canhão a cada onda, não a cada 1000 (1)
-explosão morte invasor (13)
 montar onda linha por linha e parar tiros (8)
+delay entre naves só conta após final da travessia (2)
 mudar fundo (5)
 mudar canhão (8)
 mudar explosão canhão (8)
@@ -27,6 +26,8 @@ mudar escudos (21)
 esperar nave passar para nova onda (5)
 diferentes balas invasores (8)
 variar velocidade das naves (5)
+novo canhão a cada onda, não a cada 1000 (1)
+explosão morte invasor (13)
 
 ===============
 game over quando os invasores chegam ao canhão

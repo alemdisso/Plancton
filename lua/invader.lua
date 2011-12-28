@@ -29,11 +29,21 @@ end
 
 function Invader:update(dt)
 
-	local delayToShoot = self.delayToShoot
-	local allowedToShoot = false
+	local exploding = self.exploding
+	if not exploding then
 
-	if self:allowedToShoot(dt) then
-		self:shoot()
+		local delayToShoot = self.delayToShoot
+		local allowedToShoot = false
+
+		if self:allowedToShoot(dt) then
+			self:shoot()
+		end
+	else
+		self.timeExploding = self.timeExploding + dt
+		if self.timeExploding >= self.explosionDuration then
+			InvaderBuilder:destroy(self)
+		end
+
 	end
 
 end
@@ -174,6 +184,11 @@ function Invader:engageInFormation()
 	end
 
 	self.delayToShoot = math.random(waveConstants.WAVE_MIN_DELAY, waveConstants.WAVE_MAX_DELAY)
+
+	self.exploding = false
+	self.explosionDuration = 0.17
+	self.timeExploding = 0
+
 	self.active = true
 	self.wave = wave
 
@@ -195,7 +210,8 @@ function Invader:collide(obstacle)
 
 			if (timesHitted >= 1) then
 				game:addPointsToScore(self.unitType.pts)
-				InvaderBuilder:destroy(self)
+				self:explode()
+				--InvaderBuilder:destroy(self)
 			end
 
 		end
@@ -229,17 +245,29 @@ function Invader:move(forX, forY)
 		c.pos.y = forY
 	end
 
-	local distanceWalked = math.abs(self.lastX - self.pos.x)
-	local distanceAdvanced = math.abs(self.lastY - self.pos.y)
 
-	if distanceWalked > self.width/2  or distanceAdvanced > 0 then
-		self.indexImgArray = self.indexImgArray + 1
-		if self.indexImgArray > #self.imgArray then self.indexImgArray = 1 end
-		local img = self.imgArray[self.indexImgArray]
-		self.img = img
-		self.lastX = self.pos.x
-		self.lastY = self.pos.y
+	local exploding = self.exploding
+
+	if not exploding then
+
+
+		local distanceWalked = math.abs(self.lastX - self.pos.x)
+		local distanceAdvanced = math.abs(self.lastY - self.pos.y)
+
+		if distanceWalked > self.width/2  or distanceAdvanced > 0 then
+			self.indexImgArray = self.indexImgArray + 1
+			if self.indexImgArray > #self.imgArray then self.indexImgArray = 1 end
+			local img = self.imgArray[self.indexImgArray]
+			self.img = img
+			self.lastX = self.pos.x
+			self.lastY = self.pos.y
+		end
 	end
 
 end
 
+function Invader:explode()
+	self.timeExploding = 0
+	self.exploding = true
+	self.img = game.images.invaderExplosion[1]
+end

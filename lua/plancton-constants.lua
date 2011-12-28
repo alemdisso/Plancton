@@ -83,6 +83,7 @@ waveConstants =
   WAVE_SPACE_BETWEEN_COLUMNS = 4,
   WAVE_SPACE_BETWEEN_LINES = 1,
   WAVE_DELAY_TO_NEXT_WAVE = 1,
+  WAVE_INVADER_EXPLOSION = {spriteX=200, spriteY=52, w=30, h=32},
   }
 
 waveConstants = protect_table (waveConstants)
@@ -102,7 +103,7 @@ cannonConstants =
 	CANNON_IMAGE_COORD = {spriteX=0, spriteY=0, w=55, h=50},
 	CANNON_MOTION_STEPS=4,
 	CANNON_SHOT_SOUND = "resources/audio/cannonshot.wav",
-	CANNON_SHOT_SOUND_VOLUME = 0.4,
+	CANNON_SHOT_SOUND_VOLUME = 0.25,
 	CANNON_SHOT_SOUND_PITCH = 1,
 	CANNON_DEATH_SOUND = "resources/audio/cannondeath.wav",
 	CANNON_DEATH_SOUND_VOLUME = 1,
@@ -144,9 +145,10 @@ invaderConstants =
 	INVADER_SHOT_SOUND = "resources/audio/invadershot.wav",
 	INVADER_SHOT_SOUND_VOLUME = 0.4,
 	INVADER_SHOT_SOUND_PITCH = 1,
-	INVADER_DEATH_SOUND = "resources/audio/aliendeath.wav",
-	INVADER_DEATH_SOUND_VOLUME = 1,
-	INVADER_DEATH_SOUND_PITCH = 1,
+	INVADER_DEATH_SOUND = "resources/audio/13797__sweetneo85__wilhelm.wav",
+	--INVADER_DEATH_SOUND = "resources/audio/aliendeath.wav",
+	INVADER_DEATH_SOUND_VOLUME = 0.5,
+	INVADER_DEATH_SOUND_PITCH = 0.75,
 	INVADER_BULLET_A_COORD = {spriteX=234, spriteY=0, w=5, h=13},
 	INVADER_BULLET_B_COORD = {spriteX=246, spriteY=0, w=5, h=13},
 	INVADER_BULLET_C_COORD = {spriteX=257, spriteY=0, w=5, h=13},
