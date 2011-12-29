@@ -24,7 +24,15 @@ function Invader:destroy()
 end
 
 function Invader:draw()
-	love.graphics.draw(self.img, self.pos.x, self.pos.y)
+	local lines = self.wave.numLines
+	local currentStep = self.wave.currentStep
+	local invertedLine = lines - self.line + 1
+
+
+	if self.wave.currentStep >= invertedLine then
+
+		love.graphics.draw(self.img, self.pos.x, self.pos.y)
+	end
 end
 
 function Invader:update(dt)

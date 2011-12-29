@@ -15,6 +15,17 @@ function Wave:new()
 
 	waveList[#waveList+1] = self
 
+
+
+	local myCounter = CounterBuilder:new()
+	myCounter:time(0)
+	myCounter:start()
+
+	self.timelineCounter = myCounter
+	self.currentStep = 0
+	self.completeFormation = false
+
+
 	self:loadInvadersImages()
 	self:loadSpaceshipImages()
 	self:initFormation()
@@ -36,9 +47,23 @@ end
 
 function Wave:update(dt)
 
+	if not self.completeFormation then
+		local waveLines = waveConstants.WAVE_LINES
+		local stepFormation = 0.17
+		local timeCounter = self.timelineCounter
+		local currentTime = timeCounter:time()
+		local step
+		local currentStep = self.currentStep
 
-	if self:stillFighting() then
-
+		if currentStep < waveLines then
+			step = math.floor(currentTime /stepFormation)
+			if step ~= currentStep then
+				self.currentStep = step
+			end
+		else
+			self.completeFormation = true
+		end
+	elseif self:stillFighting() then
 		local direction = self.direction
 		local speedX = self.speedX
 		local step = speedX * dt
@@ -73,6 +98,8 @@ function Wave:update(dt)
 	end
 
 end
+
+
 
 function Wave:loadInvadersImages()
 
@@ -142,6 +169,7 @@ end
 
 
 function Wave:engage()
+
 
 	self.pos.x = waveConstants.WAVE_INITIAL_X
 	self.pos.y = waveConstants.WAVE_INITIAL_Y

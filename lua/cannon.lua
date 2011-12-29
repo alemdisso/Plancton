@@ -207,9 +207,9 @@ end
 
 
 function Cannon:shoot()
-
+--print (self.waitWaveFormation)
 	if self.active then
-		if self.readyToShoot then
+		if self.readyToShoot and not self.waitWaveFormation then
 			local newBullet = BulletBuilder:new(
 								{
 									shooter=self,

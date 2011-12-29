@@ -67,6 +67,7 @@ end
 
 function love.update(dt)
 
+	game:update(dt)
 	if game.state == gameConstants.GAME_INTRO then
 		intro:update(dt)
 
@@ -74,6 +75,13 @@ function love.update(dt)
 		over:update(dt)
 
 	else
+
+		if not wave.completeFormation then
+			cannon.waitWaveFormation = true
+		else
+			cannon.waitWaveFormation = false
+		end
+
 		for i=1, #updatableList do
 			updatableList[i]:update(dt)
 		end
@@ -82,9 +90,6 @@ function love.update(dt)
 
 		--if #invaderList == 0 then
 		if endOfWave() then
-
-
-
 			if delayToNextWave <= 0 then
 				game.lives = game.lives + 1
 				wave = WaveBuilder:new(
@@ -246,7 +251,7 @@ function endOfWave()
 	local stillSpaceship = #spaceshipList
 	local endOfWave = true
 
-	if stillInvaders > 0 or stillSpaceship > 0 then
+	if stillInvaders > 0 or stillSpaceship > 0 or not wave.completeFormation then
 
 		endOfWave = false
 

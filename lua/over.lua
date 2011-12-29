@@ -115,7 +115,7 @@ function Over:showGameOver()
 	else
 		step = #letters
 	end
-		self.currentStep = step
+	self.currentStep = step
 
 	local xImage = (game.wCanvas - overConstants.OVER_GAME_OVER_COORD.w) / 2
 	local yImage = ((game.hCanvas - overConstants.OVER_GAME_OVER_COORD.h) / 2) -30
