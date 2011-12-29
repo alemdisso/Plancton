@@ -25,11 +25,11 @@ end
 
 function Invader:draw()
 	local lines = self.wave.numLines
-	local currentStep = self.wave.currentStep
+	local currentStep = self.wave.currentTimelineStep
 	local invertedLine = lines - self.line + 1
 
 
-	if self.wave.currentStep >= invertedLine then
+	if currentStep >= invertedLine then
 
 		love.graphics.draw(self.img, self.pos.x, self.pos.y)
 	end
@@ -233,7 +233,7 @@ function Invader:move(forX, forY)
 	local forX = forX or c.pos.x
 	local forY = forY or c.pos.y
 
-	local marginLeft, marginRight = waveConstants.WAVE_INITIAL_X, 12
+	local marginLeft, marginRight = 0, 12
 
 	local leftLimit = marginLeft
 	local rightLimit = (c.wCanvas - c.width - marginRight)

@@ -1,5 +1,7 @@
-montar onda linha por linha e parar tiros (8)
 delay entre naves só conta após final da travessia (2)
+diminuir velocidade e impactar escudo quando invasor chega nele (3)
+ajustar avanço (2)
+game over quando onda toca no canhão (2)
 mudar fundo (5)
 mudar canhão (8)
 mudar explosão canhão (8)
@@ -11,7 +13,6 @@ reduzir velocidade dos invasores (3)
 aumentar frequencia de disparo do canhão (2)
 regenerar escudo (5)
 só destruir invasores com tiros mais precisos (5)
-diminuir velocidade quando chega no escudo (3)
 ranking (21)
 
 
@@ -28,6 +29,7 @@ diferentes balas invasores (8)
 variar velocidade das naves (5)
 novo canhão a cada onda, não a cada 1000 (1)
 explosão morte invasor (13)
+montar onda linha por linha e parar tiros (8)
 
 ===============
 game over quando os invasores chegam ao canhão

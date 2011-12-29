@@ -11,16 +11,24 @@ CounterBuilder = createClass(Counter, Updatable)
 
 function Counter:new()
 
+
+	local countMode = self.countMode or "up"
+	local currentTime = self.currentTime   or 0
+	local goalTime = self.goalTime   or 0
+	local reachedGoal = self.reachedGoal   or false
+	local timeToCount = self.timeToCount   or 0
+	local running = self.running   or false
+
 	counterList[#counterList+1] = self
 
 	self.signature="counter"
 
-	self.countMode = "up"
-	self.currentTime = 0
-	self.goalTime = 0
-	self.reachedGoal = false
-	self.timeToCount = 0
-	self.running = false
+	self.countMode = countMode
+	self.currentTime = currentTime
+	self.goalTime = goalTime
+	self.reachedGoal = reachedGoal
+	self.timeToCount = timeToCount
+	self.running = running
 
 	self.active = true
 

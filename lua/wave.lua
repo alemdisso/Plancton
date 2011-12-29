@@ -2,7 +2,6 @@ require ("lua.class")
 require ("lua.drawable")
 require ("lua.updatable")
 
-
 waveList = {}
 waveListRemove = {}
 
@@ -10,96 +9,48 @@ Wave = {}
 
 WaveBuilder = createClass(Wave, Updatable)
 
-
 function Wave:new()
 
 	waveList[#waveList+1] = self
 
+	self:initTimeline()
+	self:loadImages()
+	self:getReadyAndGo()
 
+	return self
+end
+
+function Wave:initTimeline()
+
+	self.timelineCounter = self:newAndRunningProgressiveCounter()
+	self.currentTimelineStep = 0
+	self.completeFormation = false
+
+end
+
+function Wave:loadImages()
+
+	self:loadInvadersImages()
+	self:loadSpaceshipImages()
+
+end
+
+function Wave:getReadyAndGo()
+
+	self:prepareFormation()
+	self:engage()
+
+end
+
+function Wave:newAndRunningProgressiveCounter()
 
 	local myCounter = CounterBuilder:new()
 	myCounter:time(0)
 	myCounter:start()
 
-	self.timelineCounter = myCounter
-	self.currentStep = 0
-	self.completeFormation = false
-
-
-	self:loadInvadersImages()
-	self:loadSpaceshipImages()
-	self:initFormation()
-	self:engage()
-
-	return self
-end
-
-
-function Wave:destroy()
-	self.active = false
-	waveListRemove[#waveListRemove+1] = self
-end
-
-
-function Wave:draw()
+	return myCounter
 
 end
-
-function Wave:update(dt)
-
-	if not self.completeFormation then
-		local waveLines = waveConstants.WAVE_LINES
-		local stepFormation = 0.17
-		local timeCounter = self.timelineCounter
-		local currentTime = timeCounter:time()
-		local step
-		local currentStep = self.currentStep
-
-		if currentStep < waveLines then
-			step = math.floor(currentTime /stepFormation)
-			if step ~= currentStep then
-				self.currentStep = step
-			end
-		else
-			self.completeFormation = true
-		end
-	elseif self:stillFighting() then
-		local direction = self.direction
-		local speedX = self.speedX
-		local step = speedX * dt
-
-
-		if direction == "left" then step = step * -1 end
-
-		if self:shotOnTarget() then
-			self.haltCommand = true
-		else
-			self.haltCommand = false
-		end
-
-		self:findAndRemoveDeadUnits()
-		self:findLateralLimits()
-		self:findSpearHeads()
-		shiftMovement = self:planMove(step)
-		self:moveUnits(shiftMovement, step)
-
-		local delayToNextSpaceship = self.delayToNextSpaceship
-		local availableSpaceships = self.availableSpaceships
-
-		if self.delayToNextSpaceship <= 0  and availableSpaceships > 0 then
-			self:launchSpaceship()
-			self.delayToNextSpaceship = math.random(waveConstants.WAVE_SPACESHIP_MIN_DELAY, waveConstants.WAVE_SPACESHIP_MAX_DELAY)
-			self.availableSpaceships = self.availableSpaceships - 1
-		else
-			self.delayToNextSpaceship = self.delayToNextSpaceship - dt
-		end
-	else
-		WaveBuilder:destroy(self)
-	end
-
-end
-
-
 
 function Wave:loadInvadersImages()
 
@@ -108,24 +59,18 @@ function Wave:loadInvadersImages()
 
 end
 
-function Wave:createUnitMotionStepsRegions(x, y, w, h)
-	for i = 1, waveConstants.WAVE_UNIT_MOTION_STEPS do
-		local newRegion = RegionClass.new(((i-1) * w) + x, y, w, h)
-		table.insert(self.invaderRegions, newRegion)
-	end
+function Wave:loadSpaceshipImages()
+
+	self.spaceshipImage = game.images.spaceship
+
 end
 
-function Wave:loadUnitsImagesFromSprite()
+function Wave:prepareFormation()
 
-	local invaderRegions = self.invaderRegions
-	local invaderImgSource = {}
-	local invaderImgArray = {}
-	for i = 1, #invaderRegions do
-		local region = invaderRegions[i]
-		invaderImgSource[i] = spriteBatch:cutRegionIntoImage(region)
-	end
-
-	return invaderImgSource
+	self:initFormation()
+	self:setPosition()
+	self:prepareToMove()
+	self:enrollSpaceships()
 
 end
 
@@ -145,21 +90,31 @@ function Wave:initFormation()
 		end
 	end
 
-	self.invaders = invaders or {}
+	self.invaders = {}
 	self.formation = formation
-
 	self.spearHeads = spearHeads
-	self.numLines = numLines
-	self.numColumns = numColumns
 
-	self.pos = {x=0, y=0, z=3}
+end
+
+function Wave:setPosition()
+
+	self.pos = {x = waveConstants.WAVE_INITIAL_X, y = waveConstants.WAVE_INITIAL_Y}
 
 	self.maxX = self.width
 	self.minX = 0
 	self.maxY = self.height
+
+end
+
+function Wave:prepareToMove()
+
 	self.direction = "right"
 	self.speedX = self.speedX or waveConstants.WAVE_SPEED_X
 	self.speedY = self.speedY or waveConstants.WAVE_SPEED_Y
+
+end
+
+function Wave:enrollSpaceships()
 
 	local maxArray = waveConstants.WAVE_MAX_SPACESHIPS_ARRAY
 	local seedMax = math.random(#maxArray)
@@ -167,12 +122,8 @@ function Wave:initFormation()
 
 end
 
-
 function Wave:engage()
 
-
-	self.pos.x = waveConstants.WAVE_INITIAL_X
-	self.pos.y = waveConstants.WAVE_INITIAL_Y
 	self.invaders = {}
 	for line = 1, self.numLines do
 		for column = 1, self.numColumns do
@@ -186,19 +137,30 @@ function Wave:engage()
 
 end
 
+function Wave:stillPlacingLines()
 
-function Wave:shotOnTarget()
-
-	local game = game
-	local shotOnTarget = false
-
-	if game.state == gameConstants.GAME_EXPLOSION_MODE then
-		shotOnTarget = true
+	local waveLines = waveConstants.WAVE_LINES
+	local currentTimelineStep = self.currentTimelineStep
+	if currentTimelineStep < waveLines then
+		return true
+	else
+		return false
 	end
 
-	return shotOnTarget
 end
 
+function Wave:calculateMovementStep(dt)
+
+
+	local direction = self.direction
+	local speedX = self.speedX
+	local step = speedX * dt
+
+	if direction == "left" then step = step * -1 end
+
+	return step
+
+end
 
 function Wave:findAndRemoveDeadUnits()
 
@@ -216,36 +178,6 @@ function Wave:findAndRemoveDeadUnits()
 		end
 		toRemove[i] = nil
 	end
-end
-
-function Wave:findUnitsToRemove()
-
-	local toRemove = {}
-
-	for k,v in ipairs(self.invaders) do
-		local thisInvader = v
-		if not thisInvader.active then
-			table.insert(toRemove, thisInvader)
-		end
-	end
-
-	return toRemove
-end
-
-
-function Wave:removeDeadUnits(toRemove)
-
-	for i=1, #toRemove do
-		for j=1, #self.invaders do
-			if self.invaders[j] == toRemove[i] then
-				self.formation[self.invaders[j].line][self.invaders[j].column] = false
-				table.remove(self.invaders, j)
-				break
-			end
-		end
-		toRemove[i] = nil
-	end
-
 end
 
 
@@ -288,7 +220,6 @@ function Wave:findSpearHeads()
 
 end
 
-
 function Wave:planMove(step)
 
 	local direction = self.direction
@@ -316,29 +247,6 @@ function Wave:planMove(step)
 end
 
 
-function Wave:spaceToShift(pace)
-
-	local canvasMargin = 5
-	local leftProtection = 0
-	local rightProtection = self.width + canvasMargin
-
-	local direction = self.direction
-	local newMaxX = self.maxX + pace + rightProtection
-	local newMinX = self.minX + pace - leftProtection
-	local wCanvas = game.wCanvas - canvasMargin
-	local spaceToShift = false
-
-
-	if direction == "right" then
-		if newMaxX <= wCanvas then spaceToShift = true end
-	else
-		if newMinX >= 0 then spaceToShift = true end
-	end
-
-	return spaceToShift
-
-end
-
 function Wave:moveUnits(shiftMovement, step)
 
 	for i, v in ipairs(self.invaders) do
@@ -362,6 +270,119 @@ function Wave:moveUnits(shiftMovement, step)
 			end
 		end
 	end
+end
+
+function Wave:manageSpaceships(dt)
+
+	local delayToNextSpaceship = self.delayToNextSpaceship
+	local availableSpaceships = self.availableSpaceships
+	local spaceshipsEngaged = #spaceshipList
+
+	if self.waitToPrepareNextSpaceship == true and spaceshipsEngaged == 0 then
+		delayToNextSpaceship = math.random(waveConstants.WAVE_SPACESHIP_MIN_DELAY, waveConstants.WAVE_SPACESHIP_MAX_DELAY)
+		self.waitToPrepareNextSpaceship = false
+	end
+
+	if spaceshipsEngaged == 0 and delayToNextSpaceship <= 0 and availableSpaceships > 0 then
+		self.waitToPrepareNextSpaceship = true
+		self:launchSpaceship()
+		self.availableSpaceships = self.availableSpaceships - 1
+
+	else
+		delayToNextSpaceship = delayToNextSpaceship - dt
+	end
+
+	self.delayToNextSpaceship = delayToNextSpaceship
+
+end
+
+function Wave:createUnitMotionStepsRegions(x, y, w, h)
+	for i = 1, waveConstants.WAVE_UNIT_MOTION_STEPS do
+		local newRegion = RegionClass.new(((i-1) * w) + x, y, w, h)
+		table.insert(self.invaderRegions, newRegion)
+	end
+end
+
+function Wave:loadUnitsImagesFromSprite()
+
+	local invaderRegions = self.invaderRegions
+	local invaderImgSource = {}
+	local invaderImgArray = {}
+	for i = 1, #invaderRegions do
+		local region = invaderRegions[i]
+		invaderImgSource[i] = spriteBatch:cutRegionIntoImage(region)
+	end
+
+	return invaderImgSource
+
+end
+
+function Wave:checkIfShotOnTarget()
+
+	local game = game
+	local shotOnTarget = false
+
+	if game.state == gameConstants.GAME_EXPLOSION_MODE then
+		shotOnTarget = true
+		self.haltCommand = true
+	else
+		self.haltCommand = false
+	end
+
+	return shotOnTarget
+end
+
+
+function Wave:findUnitsToRemove()
+
+	local toRemove = {}
+
+	for k,v in ipairs(self.invaders) do
+		local thisInvader = v
+		if not thisInvader.active then
+			table.insert(toRemove, thisInvader)
+		end
+	end
+
+	return toRemove
+end
+
+
+function Wave:removeDeadUnits(toRemove)
+
+	for i=1, #toRemove do
+		for j=1, #self.invaders do
+			if self.invaders[j] == toRemove[i] then
+				self.formation[self.invaders[j].line][self.invaders[j].column] = false
+				table.remove(self.invaders, j)
+				break
+			end
+		end
+		toRemove[i] = nil
+	end
+
+end
+
+
+function Wave:spaceToShift(pace)
+
+	local canvasMargin = 5
+	local leftProtection = 0
+	local rightProtection = self.width + canvasMargin
+	local direction = self.direction
+	local newMaxX = self.maxX + pace + rightProtection
+	local newMinX = self.minX + pace - leftProtection
+	local wCanvas = game.wCanvas - canvasMargin
+	local spaceToShift = false
+
+	if direction == "right" then
+		if newMaxX <= wCanvas then spaceToShift = true end
+	else
+		if newMinX >= 0 then spaceToShift = true end
+	end
+
+	return spaceToShift
+
 end
 
 function Wave:placeInvader(column, line)
@@ -428,12 +449,9 @@ function Wave:placeInvader(column, line)
 
 end
 
-
 function Wave:findWiderUnit()
 
-
 	local invaderImages = self.invaderImages
-
 	local widerUnitWidth = 0
 
 	for i,v in ipairs(invaderImages) do
@@ -451,32 +469,6 @@ function Wave:findWiderUnit()
 
 end
 
-
-function Wave:loadSpaceshipImages()
-
-	local spriteBatch = game.spriteBatch
-
-	self.spaceshipRegions = {}
-
-	local spaceships = {waveConstants.WAVE_SPACESHIP}
-
-	for i,v in ipairs(spaceships) do
-		local spaceshipCoordinates = v
-		self:createSpaceshipMotionStepsRegions(spaceshipCoordinates.x,
-									spaceshipCoordinates.y,
-									spaceshipCoordinates.w,
-									spaceshipCoordinates.h
-									)
-	end
-
-	spaceshipImgSource = self:loadSpaceshipsImagesFromSprite()
-	self.spaceshipImgSource = spaceshipImgSource
-
-	return spaceshipImgSource
-
-end
-
-
 function Wave:createSpaceshipMotionStepsRegions(x, y, w, h)
 	for i = 1, waveConstants.WAVE_SPACESHIP_MOTION_STEPS do
 		local newRegion = RegionClass.new(((i-1) * w) + x, y, w, h)
@@ -484,39 +476,13 @@ function Wave:createSpaceshipMotionStepsRegions(x, y, w, h)
 	end
 end
 
-function Wave:loadSpaceshipsImagesFromSprite()
-
-	local spaceshipRegions = self.spaceshipRegions
-	local spaceshipImgSource = {}
-	local spaceshipImgArray = {}
-	local spriteBatch = game.spriteBatch
-	for i = 1, #spaceshipRegions do
-		local region = spaceshipRegions[i]
-		spaceshipImgSource[i] = spriteBatch:cutRegionIntoImage(region)
-	end
-
-	return spaceshipImgSource
-
-end
-
 function Wave:launchSpaceship()
 
 	local newSpaceship = SpaceshipBuilder:new(
 					{
-						imgSourceArray = self.spaceshipImgSource,
+					imgSourceArray = self.spaceshipImage,
 					}
 				)
-
-end
-
-function Wave:stillFighting()
-
-	local headCount = #self.invaders
-	if headCount > 0 then
-		return true
-	else
-		return false
-	end
 
 end
 
@@ -555,4 +521,90 @@ function Wave:dumpFormationAndSpearHeads()
 		end
 			print (stringLine)
 	end
+end
+
+
+function Wave:newStoppedRegressiveCounter()
+
+	print ("time " .. time)
+	local myCounter = CounterBuilder:new({countMode="down"})
+	myCounter:time(0)
+
+	myCounter:start()
+
+	return myCounter
+
+end
+
+function Wave:destroy()
+	self.active = false
+	waveListRemove[#waveListRemove+1] = self
+end
+
+function Wave:draw()
+
+end
+
+function Wave:update(dt)
+
+	if not self:isFormationAlreadyCompleted() then
+		self:watchTimelineStep()
+	elseif self:stillFighting() then
+		self:manageLogistics(dt)
+	else
+		WaveBuilder:destroy(self)
+	end
+
+end
+
+function Wave:isFormationAlreadyCompleted()
+
+	if self:stillPlacingLines() then
+		self.completeFormation = false
+	else
+		self.completeFormation = true
+	end
+
+	return self.completeFormation
+
+end
+
+
+function Wave:watchTimelineStep()
+	local stepFormation = 0.17
+	local timeCounter = self.timelineCounter
+	local currentTime = timeCounter:time()
+	local newTimelineStep = math.floor(currentTime /stepFormation)
+
+	if newTimelineStep ~= currentTimelineStep then
+		self.currentTimelineStep = newTimelineStep
+	end
+
+end
+
+function Wave:stillFighting()
+
+	local headCount = #self.invaders
+	if headCount > 0 then
+		return true
+	else
+		return false
+	end
+
+end
+
+function Wave:manageLogistics(dt)
+
+	local movementStep = self:calculateMovementStep(dt)
+
+	self:checkIfShotOnTarget()
+
+	self:findAndRemoveDeadUnits()
+	self:findLateralLimits()
+	self:findSpearHeads()
+	local shiftMovement = self:planMove(movementStep)
+	self:moveUnits(shiftMovement, movementStep)
+
+	self:manageSpaceships(dt)
+
 end

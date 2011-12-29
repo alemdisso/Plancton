@@ -60,7 +60,7 @@ waveConstants =
   {
   WAVE_SPEED_X = 40, --40
   WAVE_SPEED_Y = 20, --20
-  WAVE_INITIAL_X = 0,
+  WAVE_INITIAL_X = 32,
   WAVE_INITIAL_Y = 60,
   WAVE_LINES = 5,
   WAVE_COLUMNS = 11,
