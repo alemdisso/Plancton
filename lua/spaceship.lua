@@ -112,6 +112,8 @@ function Spaceship:move(step)
 	self.pos.x = newX
 
 	if self:limitReached() then
+		self.travelSound:stop()
+
 		SpaceshipBuilder:destroy(self)
 	end
 

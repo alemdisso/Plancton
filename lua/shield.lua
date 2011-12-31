@@ -88,15 +88,9 @@ end
 
 function Shield:loadSounds()
 
-	local hitSound = love.audio.newSource(shieldConstants.SHIELD_HIT_SOUND, static)
 
-	hitSound:setVolume(shieldConstants.SHIELD_HIT_SOUND_VOLUME)
-	hitSound:setPitch(shieldConstants.SHIELD_HIT_SOUND_PITCH)
-
-
-	self.hitSound = hitSound
-
-
+	self.hitSound = game:loadShieldHitSound()
+	self.attackedSound = game:loadShieldAttackedSound()
 
 
 end

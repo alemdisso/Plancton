@@ -18,10 +18,7 @@ require ("lua.collisionmanager")
 function love.load()
 
 	game = GameBuilder:new()
-
-
 	spriteBatch = game.spriteBatch
-	--gameState = game.state
 	bg = game.bg
 	font = game.font
 	intro = IntroBuilder:new()
@@ -48,12 +45,8 @@ function love.draw()
 	love.graphics.draw(bg)
 	if game.state == gameConstants.GAME_OVER then
 		over:draw()
-
 	elseif game.state == gameConstants.GAME_INTRO then
 		intro:draw()
-		--intro:showTitle()
-		--intro:showPlayButton()
-		--intro:showUnitsAndPoints()
 	else
 		for i=1, #drawableList do
 			drawableList[i]:draw()
@@ -67,13 +60,13 @@ end
 
 function love.update(dt)
 
-	game:update(dt)
+	--game:update(dt)
+	--print (game.state)
 	if game.state == gameConstants.GAME_INTRO then
 		intro:update(dt)
 
 	elseif  game.state == gameConstants.GAME_OVER then
 		over:update(dt)
-
 	else
 
 		if not wave.completeFormation then
@@ -123,12 +116,14 @@ function love.update(dt)
 				game.state = gameConstants.GAME_OVER
 			end
 		else
-			local cannon = cannonList[1]
-			local exploding = cannon.exploding
-			if exploding == true then
-				game.state = gameConstants.GAME_EXPLOSION_MODE
-			else
-				game.state = gameConstants.GAME_PLAY_KEYBOARD
+			if game.state ~= gameConstants.GAME_OVER then
+				local cannon = cannonList[1]
+				local exploding = cannon.exploding
+				if exploding == true then
+					game.state = gameConstants.GAME_EXPLOSION_MODE
+				else
+					game.state = gameConstants.GAME_PLAY_KEYBOARD
+				end
 			end
 
 		end
@@ -209,30 +204,7 @@ function love.mousepressed(x, y, button)
 
 	end
 
-
-
-	--[[
-	for _, s in ipairs(shields) do
-		if x > s.pos.x and x < s.pos.x + s.width and
-			y > s.pos.y and y < s.pos.y + s.height then
-
-			s.dragging.active = true
-			s.dragging.diffx = x - s.pos.x
-			s.dragging.diffy = y - s.pos.y
-			break
-
-		end
-	end
-
-	]]
-
-
-
-
-
 end
-
-
 
 function drawIntro()
 
@@ -240,10 +212,7 @@ function drawIntro()
 	love.graphics.draw(menuMouse)
 	love.graphics.draw(menuKeyboard)
 
-
-
 end
-
 
 function endOfWave()
 
@@ -268,6 +237,7 @@ function prepareCollisionTables()
 
 	local collisionManager = CollisionManagerBuilder:new()
 	collisionManager:addCollisionTables(blockList, bulletList)
+	collisionManager:addCollisionTables(blockList, invaderList)
 	collisionManager:addCollisionTables(cannonList, bulletList)
 	collisionManager:addCollisionTables(invaderList, bulletList)
 	collisionManager:addCollisionTables(invaderList, cannonList)

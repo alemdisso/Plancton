@@ -37,7 +37,7 @@ end
 
 function Cannon:update(dt)
 
-
+	if game.state == gameConstants.GAME_PLAY_KEYBOARD then
 		if not self.exploding then
 			local new_x = self.pos.x
 			local new_y = self.pos.y
@@ -58,7 +58,7 @@ function Cannon:update(dt)
 				CannonBuilder:destroy(self)
 			end
 		end
-
+	end
 end
 
 
@@ -192,15 +192,15 @@ function Cannon:collide(obstacle)
 
 	if obstacle.signature == "invader" then
 		game.state = gameConstants.GAME_OVER
+	else
+		print(obstacle.signature)
+		self:death()
 	end
-
-	self:death()
 
 end
 
 
 function Cannon:shoot()
-
 	if self.active then
 		if self.readyToShoot and not self.waitWaveFormation then
 			local newBullet = BulletBuilder:new(

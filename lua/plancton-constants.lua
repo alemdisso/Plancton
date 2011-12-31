@@ -19,7 +19,8 @@ gameConstants =
   GAME_OVER = 3,
   GAME_EXPLOSION_MODE = 4,
   GAME_SPRITE = "resources/images/plancton_sprite.png",
-  GAME_BG = "resources/images/bg.png",
+  GAME_BG = "resources/images/sea-bg.png",
+  --GAME_BG = "resources/images/bg.png",
   GAME_FONT = "resources/fonts/04B_03B_.TTF",
   GAME_FONTSIZE = 18,
   GAME_LIVES = 3,
@@ -58,8 +59,6 @@ introConstants = protect_table (introConstants)
 
 waveConstants =
   {
-  WAVE_SPEED_X = 40, --40
-  WAVE_SPEED_Y = 20, --20
   WAVE_INITIAL_X = 32,
   WAVE_INITIAL_Y = 60,
   WAVE_LINES = 5,
@@ -72,9 +71,11 @@ waveConstants =
   WAVE_UNIT_C_COORD = {spriteX=0, spriteY=50, w=32, h=32},
   WAVE_SPACESHIP_COORD = {spriteX=168, spriteY=54, w=30, h=20},
   WAVE_SPACESHIP = {x=168, y=71, w=20, h=13},
-  WAVE_INVADER_A = {x=65, y=50, w=25, h=32, pts=40, minDelay=2, maxDelay=7},
-  WAVE_INVADER_B = {x=115, y=50, w=27, h=32, pts=20, minDelay=3, maxDelay=8},
-  WAVE_INVADER_C = {x=0, y=50, w=32, h=32, pts=10, minDelay=2, maxDelay=10},
+  WAVE_INVADER_A = {pts=40, minDelay=2, maxDelay=7, motionImagesArray={},},
+  WAVE_INVADER_B = {pts=20, minDelay=3, maxDelay=8, motionImagesArray={},},
+  WAVE_INVADER_C = {pts=10, minDelay=2, maxDelay=10, motionImagesArray={},},
+  WAVE_PERC_BACK_LINES = 0.2,
+  WAVE_PERC_FRONT_LINES = 0.4,
   WAVE_SPACESHIP_MIN_DELAY = 10,--20,
   WAVE_SPACESHIP_MAX_DELAY = 17,--40,
   WAVE_SPACESHIP = {x=168, y=71, w=20, h=13},
@@ -128,6 +129,12 @@ shieldConstants =
 	SHIELD_HIT_SOUND = "resources/audio/shieldhit.wav",
 	SHIELD_HIT_SOUND_VOLUME = 0.8,
 	SHIELD_HIT_SOUND_PITCH = 1,
+
+	SHIELD_ATTACKED_SOUND = "resources/audio/36846__ecodtr__laserrocket.wav",
+	SHIELD_ATTACKED_SOUND_VOLUME = 0.5,
+	SHIELD_ATTACKED_SOUND_PITCH = 0.75,
+
+
 	SHIELD_LATERAL_MARGINS = 30,
 	SHIELD_BOTTOM_MARGIN = 20,
   }
@@ -168,7 +175,7 @@ spaceshipConstants =
 	SPACESHIP_DEATH_SOUND = "resources/audio/spaceshipdeath.wav",
 	SPACESHIP_DEATH_SOUND_VOLUME = 0.75,
 	SPACESHIP_DEATH_SOUND_PITCH = 0.75,
-	SPACESHIP_DELAY_TO_PLAY_SOUND = 2,
+	SPACESHIP_DELAY_TO_PLAY_SOUND = 0.5,
 	SPACESHIP_POINTS_ARRAY = {50, 100, 100, 150, 150, 200, 200, 300},
 	SPACESHIP_TIME_SHOWING_POINTS = 2,
 	SPACESHIP_TRAVEL_SPEED = 70,

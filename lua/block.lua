@@ -104,21 +104,35 @@ function Block:initPixels()
 end
 
 
-function Block:collide(bullet)
+function Block:collide(obstacle)
 
-	self.shield.hitSound:stop()
-	self.shield.hitSound:play()
 
-	local hitImpact = self:hitImpact(bullet)
-	local timesHitted = self.timesHitted + hitImpact
+
 	local maxHits = shieldConstants.SHIELD_HITS_BLOCK
+	local timesHitted
+	local hitImpact
+
+	if obstacle.signature == "bullet" then
+		self.shield.hitSound:stop()
+		self.shield.hitSound:play()
+		local bullet = obstacle
+		hitImpact = self:hitImpact(bullet)
+		timesHitted = self.timesHitted + hitImpact
+
+	elseif obstacle.signature == "invader" then
+
+		self.shield.attackedSound:stop()
+		self.shield.attackedSound:play()
+		hitImpact = 0.1
+		timesHitted = self.timesHitted + hitImpact
+
+	end
 
 	if (timesHitted >= maxHits) then
 		BlockBuilder:destroy(self)
 	else
 		self:damage(hitImpact)
 	end
-
 	self.timesHitted = timesHitted
 
 end

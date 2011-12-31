@@ -65,53 +65,55 @@ function Game:createLevels()
 
 	local gameLevels =	{
 			{
-				speedX = 40,
-				speedY = 20,
-				delays = {5,15,7,30,17,40},
-		},
-			{
 				speedX = 42,
-				speedY = 21,
-				delays = {5,14,6,28,13,35},
+				speedY = 20,
+				--speedX = 70,
+				--speedY = 40,
+				delays = {5,15,7,30,17,35},
 		},
 			{
 				speedX = 44,
-				speedY = 22,
-				delays = {4,13,6,26,11,32},
+				speedY = 21,
+				delays = {5,14,6,28,13,32},
 		},
 			{
 				speedX = 47,
-				speedY = 25,
-				delays = {4,12,5,23,9,28},
+				speedY = 22,
+				delays = {4,13,6,26,11,30},
 		},
 			{
 				speedX = 50,
-				speedY = 27,
+				speedY = 23,
+				delays = {4,12,5,23,9,28},
+		},
+			{
+				speedX = 53,
+				speedY = 25,
 				delays = {3,11,5,20,7,25},
 		},
 			{
-				speedX = 55,
-				speedY = 30,
+				speedX = 57,
+				speedY = 27,
 				delays = {3,10,4,17,5,20},
 		},
 			{
-				speedX = 62,
-				speedY = 35,
+				speedX = 61,
+				speedY = 30,
 				delays = {2,9,4,15,4,18},
 		},
 			{
-				speedX = 70,
-				speedY = 40,
+				speedX = 65,
+				speedY = 33,
 				delays = {2,8,3,12,3,15},
 		},
 			{
-				speedX = 80,
-				speedY = 47,
+				speedX = 70,
+				speedY = 37,
 				delays = {1,7,2,10,2,12},
 		},
 			{
-				speedX = 90,
-				speedY = 52,
+				speedX = 75,
+				speedY = 42,
 				delays = {1,6,1,8,2,10},
 		},
 	}
@@ -241,6 +243,9 @@ function Game:loadSounds()
 	sounds["spaceshipDeath"] = self:loadSpaceshipDeathSound()
 	sounds["spaceshipTravel"] = self:loadSpaceshipTravelSound()
 
+	sounds["shieldHit"] = self:loadShieldHitSound()
+	sounds["shieldAttacked"] = self:loadShieldAttackedSound()
+
 	self.sounds = sounds
 
 end
@@ -296,6 +301,20 @@ function Game:loadSpaceshipDeathSound()
 	local filePath = spaceshipConstants.SPACESHIP_DEATH_SOUND
 	local volume = spaceshipConstants.SPACESHIP_DEATH_SOUND_VOLUME
 	local pitch = spaceshipConstants.SPACESHIP_DEATH_SOUND_PITCH
+	return self:loadSound(filePath, volume, pitch)
+end
+
+function Game:loadShieldHitSound()
+	local filePath = shieldConstants.SHIELD_HIT_SOUND
+	local volume = shieldConstants.SHIELD_HIT_SOUND_VOLUME
+	local pitch = shieldConstants.SHIELD_HIT_SOUND_PITCH
+	return self:loadSound(filePath, volume, pitch)
+end
+
+function Game:loadShieldAttackedSound()
+	local filePath = shieldConstants.SHIELD_ATTACKED_SOUND
+	local volume = shieldConstants.SHIELD_ATTACKED_SOUND_VOLUME
+	local pitch = shieldConstants.SHIELD_ATTACKED_SOUND_PITCH
 	return self:loadSound(filePath, volume, pitch)
 end
 
@@ -508,3 +527,17 @@ function Game:loadCannonBulletImages()
 
 end
 
+
+function Game:currentLevel()
+
+	local level = nil
+	local waveCount = #waveList
+	if waveCount > 10 then
+		level = game.gameLevels[10]
+	else
+		level = game.gameLevels[waveCount]
+	end
+
+	return level
+
+end

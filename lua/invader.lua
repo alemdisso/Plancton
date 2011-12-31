@@ -116,6 +116,7 @@ end
 function Invader:getImages()
 
 	local indexImgArray = 1
+	self.imgArray = self.unitType.motionImagesArray
 	self.img = self.imgArray[indexImgArray]
 	self.indexImgArray = indexImgArray
 
@@ -222,6 +223,13 @@ function Invader:collide(obstacle)
 				--InvaderBuilder:destroy(self)
 			end
 
+		end
+	elseif obstacle.signature == "cannon" then
+		game.state = gameConstants.GAME_OVER
+	elseif obstacle.signature == "block" then
+
+		if obstacle.active == true then
+			self.wave.attackingShield = true
 		end
 	end
 end
